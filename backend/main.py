@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.api.routers.auth import router as auth_router
+from app.api.routers.scans import router as scans_router
 from app.core.config import settings
 from app.db.session import check_connection
 
@@ -20,6 +21,7 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
+app.include_router(scans_router)
 
 
 @app.get("/api/health")
