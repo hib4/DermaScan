@@ -41,7 +41,12 @@ class CustomCard extends StatelessWidget {
         children: [
           Container(
             width: 4,
-            color: accentColor,
+            decoration: BoxDecoration(
+              color: accentColor,
+              borderRadius: const BorderRadius.horizontal(
+                left: Radius.circular(8),
+              ),
+            ),
           ),
           Expanded(child: card),
         ],
@@ -49,10 +54,14 @@ class CustomCard extends StatelessWidget {
     }
 
     if (onTap != null) {
-      card = InkWell(
-        onTap: onTap,
+      card = Material(
+        color: Colors.transparent,
+        clipBehavior: Clip.antiAlias,
         borderRadius: BorderRadius.circular(8),
-        child: card,
+        child: InkWell(
+          onTap: onTap,
+          child: card,
+        ),
       );
     }
 
