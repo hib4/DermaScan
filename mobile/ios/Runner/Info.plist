@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>DermaScan needs camera access to capture photos of your skin for AI analysis.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>DermaScan needs photo library access to select skin photos for AI analysis.</string>
 </dict>
 </plist>

@@ -12,6 +12,7 @@ class AppConstants {
   static const String settings = '/settings';
   static const String camera = '/camera';
   static const String results = '/results';
+  static const String processing = '/processing';
 
   // Shell route for bottom navigation
   static const String shellRoute = '/home';
