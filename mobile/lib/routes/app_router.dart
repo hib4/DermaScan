@@ -6,7 +6,8 @@ import '../screens/login_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/history_screen.dart';
 import '../screens/settings_screen.dart';
-import '../screens/camera_screen.dart';
+import '../screens/scan/camera_screen.dart';
+import '../screens/scan/processing_screen.dart';
 import '../screens/results_screen.dart';
 import '../widgets/scaffold_with_nav_bar.dart';
 
@@ -62,6 +63,13 @@ class AppRouter {
           GoRoute(
             path: AppConstants.camera,
             builder: (_, __) => const CameraScreen(),
+          ),
+          GoRoute(
+            path: AppConstants.processing,
+            builder: (context, state) {
+              final imagePath = state.uri.queryParameters['path'];
+              return ProcessingScreen(imagePath: imagePath);
+            },
           ),
           GoRoute(
             path: AppConstants.results,
