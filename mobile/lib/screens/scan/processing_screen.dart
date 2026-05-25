@@ -31,7 +31,8 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
 
     try {
       final file = File(widget.imagePath!);
-      final floatBuffer = await ImageProcessor.preprocessImage(file);
+      // Preprocess image (floatBuffer will be passed to TFLite in Phase 3)
+      await ImageProcessor.preprocessImage(file);
 
       if (!mounted) return;
 
