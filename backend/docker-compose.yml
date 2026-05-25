@@ -5,6 +5,7 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+      - uploads_data:/app/uploads
     environment:
       - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-dermascan}:${POSTGRES_PASSWORD:-dermascan}@db:5432/${POSTGRES_DB:-dermascan}
       - APP_NAME=DermaScan API
@@ -37,3 +38,4 @@ services:
 
 volumes:
   dermascan_data:
+  uploads_data:
