@@ -1,0 +1,36 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-dermascan}:${POSTGRES_PASSWORD:-dermascan}@db:5432/${POSTGRES_DB:-dermascan}
+      - APP_NAME=DermaScan API
+      - DEBUG=${DEBUG:-true}
+      - ALLOWED_ORIGINS='["*"]'
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-dermascan}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-dermascan}
+      - POSTGRES_DB=${POSTGRES_DB:-dermascan}
+    volumes:
+      - dermascan_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-dermascan}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  dermascan_data:
