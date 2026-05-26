@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../core/constants/app_constants.dart';
+import '../core/cubit/auth_cubit.dart';
+import '../core/cubit/auth_states.dart';
+import '../widgets/custom_text_field.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/secondary_button.dart';
-import '../widgets/custom_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,15 +16,26 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool _loading = false;
+  final _email = TextEditingController();
+  final _password = TextEditingController();
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
+    _email.dispose();
+    _password.dispose();
     super.dispose();
+  }
+
+  void _onLogin() {
+    final email = _email.text.trim();
+    final password = _password.text;
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields')),
+      );
+      return;
+    }
+    context.read<AuthCubit>().login(email: email, password: password);
   }
 
   @override
@@ -49,26 +63,42 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 40),
               CustomTextField(
-                controller: _emailController,
+                controller: _email,
                 labelText: 'Email',
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 16),
               CustomTextField(
-                controller: _passwordController,
+                controller: _password,
                 labelText: 'Password',
                 obscureText: true,
               ),
               const SizedBox(height: 32),
-              PrimaryButton(
-                text: 'Login',
-                onPressed: _loading ? null : () => context.go(AppConstants.home),
-                isLoading: _loading,
-              ),
-              const SizedBox(height: 12),
-              SecondaryButton(
-                text: 'Create Account',
-                onPressed: () {},
+              BlocConsumer<AuthCubit, AuthState>(
+                listener: (context, state) {
+                  if (state is AuthError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(state.message)),
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  final loading = state is AuthLoading;
+                  return Column(
+                    children: [
+                      PrimaryButton(
+                        text: 'Login',
+                        onPressed: loading ? null : _onLogin,
+                        isLoading: loading,
+                      ),
+                      const SizedBox(height: 12),
+                      SecondaryButton(
+                        text: 'Create Account',
+                        onPressed: loading ? null : () => context.go(AppConstants.registration),
+                      ),
+                    ],
+                  );
+                },
               ),
             ],
           ),
