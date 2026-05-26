@@ -13,6 +13,7 @@ class AppConstants {
   static const String camera = '/camera';
   static const String results = '/results';
   static const String processing = '/processing';
+  static const String registration = '/register';
 
   // Shell route for bottom navigation
   static const String shellRoute = '/home';
