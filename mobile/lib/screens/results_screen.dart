@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../core/constants/app_constants.dart';
 import '../core/cubit/scan_cubit.dart';
-import '../core/models/scan_state.dart';
 import '../theme/app_colors.dart';
 import '../widgets/custom_card.dart';
 
