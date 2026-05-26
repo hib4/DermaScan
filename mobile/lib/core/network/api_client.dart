@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer' as dev;
 import 'package:http/http.dart' as http;
 import '../services/storage_provider.dart';
 import 'api_config.dart';
@@ -24,22 +25,25 @@ class ApiClient {
   Future<dynamic> get(String path) async {
     final uri = Uri.parse('$baseUrl$path');
     final headers = await _headers();
+    dev.log('GET ${uri.toString()}', name: 'ApiClient');
     final response = await _client.get(uri, headers: headers);
-    return _handleResponse(response);
+    return _handleResponse(path, response);
   }
 
   Future<dynamic> post(String path, Map<String, dynamic> body) async {
     final uri = Uri.parse('$baseUrl$path');
     final headers = await _headers(extra: {'Content-Type': 'application/json'});
+    dev.log('POST ${uri.toString()}  body=${jsonEncode(body)}', name: 'ApiClient');
     final response = await _client.post(uri, headers: headers, body: jsonEncode(body));
-    return _handleResponse(response);
+    return _handleResponse(path, response);
   }
 
   Future<dynamic> postForm(String path, Map<String, String> body) async {
     final uri = Uri.parse('$baseUrl$path');
     final headers = await _headers();
+    dev.log('POST(FORM) ${uri.toString()}  body=$body', name: 'ApiClient');
     final response = await _client.post(uri, headers: headers, body: body);
-    return _handleResponse(response);
+    return _handleResponse(path, response);
   }
 
   Future<dynamic> postMultipart(
@@ -57,13 +61,20 @@ class ApiClient {
     request.fields.addAll(fields);
     request.files.add(await http.MultipartFile.fromPath(fileField, filePath));
 
+    dev.log('POST(MULTIPART) ${uri.toString()}  fields=$fields  file=$filePath', name: 'ApiClient');
     final streamed = await _client.send(request);
     final response = await http.Response.fromStream(streamed);
-    return _handleResponse(response);
+    return _handleResponse(path, response);
   }
 
-  dynamic _handleResponse(http.Response response) {
-    if (response.statusCode >= 200 && response.statusCode < 300) {
+  dynamic _handleResponse(String path, http.Response response) {
+    final hasToken = response.statusCode >= 200 && response.statusCode < 300;
+    dev.log(
+      '${response.statusCode} $path  ${hasToken ? "OK" : response.body}',
+      name: 'ApiClient',
+    );
+
+    if (hasToken) {
       if (response.body.isEmpty) return null;
       return jsonDecode(response.body);
     }
