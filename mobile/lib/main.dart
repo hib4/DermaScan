@@ -44,7 +44,7 @@ class DermaScanApp extends StatelessWidget {
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, authState) {
           final initialLocation = (authState is AuthAuthenticated)
-              ? AppConstants.home
+              ? AppConstants.shell
               : AppConstants.onboarding;
           return MaterialApp.router(
             title: AppConstants.appName,

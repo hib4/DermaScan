@@ -10,6 +10,7 @@ class AppConstants {
   static const String home = '/home';
   static const String history = '/history';
   static const String settings = '/settings';
+  static const String shell = '/';
   static const String camera = '/camera';
   static const String results = '/results';
   static const String processing = '/processing';

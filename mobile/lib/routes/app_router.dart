@@ -20,7 +20,6 @@ import '../screens/settings_screen.dart';
 import '../widgets/scaffold_with_nav_bar.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 class AppRouter {
   AppRouter._();
@@ -39,12 +38,7 @@ class AppRouter {
               state.matchedLocation == AppConstants.onboarding ||
               state.matchedLocation == AppConstants.registration;
           if (!isAuth && !isAuthRoute) return AppConstants.login;
-          if (isAuth && isAuthRoute) {
-            // Replace instead of push to avoid transition animation
-            if (state.uri.path != AppConstants.home) {
-              return AppConstants.home;
-            }
-          }
+          if (isAuth && isAuthRoute) return AppConstants.shell;
           return null;
         },
         routes: [
@@ -60,34 +54,21 @@ class AppRouter {
             path: AppConstants.registration,
             builder: (_, __) => const RegistrationScreen(),
           ),
-          ShellRoute(
-            navigatorKey: _shellNavigatorKey,
-            builder: (context, state, child) {
+          GoRoute(
+            path: AppConstants.shell,
+            builder: (context, state) {
               final storage = SecureStorageService.instance;
               final apiClient = ApiClient(storage: storage);
               return BlocProvider(
                 create: (_) => ScanHistoryCubit(
                     repository: ScanRepository(apiClient: apiClient)),
-                child: ScaffoldWithNavBar(child: child),
+                child: ScaffoldWithNavBar(
+                  home: const HomeScreen(),
+                  history: const HistoryScreen(),
+                  settings: const SettingsScreen(),
+                ),
               );
             },
-            routes: [
-              GoRoute(
-                path: AppConstants.home,
-                parentNavigatorKey: _shellNavigatorKey,
-                builder: (_, __) => const HomeScreen(),
-              ),
-              GoRoute(
-                path: AppConstants.history,
-                parentNavigatorKey: _shellNavigatorKey,
-                builder: (_, __) => const HistoryScreen(),
-              ),
-              GoRoute(
-                path: AppConstants.settings,
-                parentNavigatorKey: _shellNavigatorKey,
-                builder: (_, __) => const SettingsScreen(),
-              ),
-            ],
           ),
           GoRoute(
             path: AppConstants.camera,

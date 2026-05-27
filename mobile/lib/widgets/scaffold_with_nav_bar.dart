@@ -1,30 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import '../core/constants/app_constants.dart';
 
 /// Bottom navigation shell for Home, History, and Settings tabs.
-class ScaffoldWithNavBar extends StatelessWidget {
-  const ScaffoldWithNavBar({super.key, required this.child});
+/// Manages tabs locally with IndexedStack to avoid route transition animations.
+class ScaffoldWithNavBar extends StatefulWidget {
+  const ScaffoldWithNavBar({
+    super.key,
+    required this.home,
+    required this.history,
+    required this.settings,
+  });
 
-  final Widget child;
+  final Widget home;
+  final Widget history;
+  final Widget settings;
 
-  void _goTo(BuildContext context, String path) {
-    context.replace(path);
-  }
+  @override
+  State<ScaffoldWithNavBar> createState() => _ScaffoldWithNavBarState();
+}
+
+class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: child,
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [widget.home, widget.history, widget.settings],
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex(context),
-        onTap: (index) {
-          switch (index) {
-            case 0: _goTo(context, AppConstants.home); break;
-            case 1: _goTo(context, AppConstants.history); break;
-            case 2: _goTo(context, AppConstants.settings); break;
-          }
-        },
+        currentIndex: _currentIndex,
+        onTap: (index) => setState(() => _currentIndex = index),
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
@@ -44,12 +50,5 @@ class ScaffoldWithNavBar extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  int _currentIndex(BuildContext context) {
-    final location = GoRouterState.of(context).uri.path;
-    if (location == AppConstants.history) return 1;
-    if (location == AppConstants.settings) return 2;
-    return 0;
   }
 }
