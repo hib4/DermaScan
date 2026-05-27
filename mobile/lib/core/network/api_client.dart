@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer' as dev;
 import 'package:http/http.dart' as http;
 import '../services/storage_provider.dart';
 import 'api_config.dart';
@@ -25,7 +24,7 @@ class ApiClient {
   Future<dynamic> get(String path) async {
     final uri = Uri.parse('$baseUrl$path');
     final headers = await _headers();
-    dev.log('GET ${uri.toString()}', name: 'ApiClient');
+    print('[API] GET $uri');
     final response = await _client.get(uri, headers: headers);
     return _handleResponse(path, response);
   }
@@ -33,7 +32,7 @@ class ApiClient {
   Future<dynamic> post(String path, Map<String, dynamic> body) async {
     final uri = Uri.parse('$baseUrl$path');
     final headers = await _headers(extra: {'Content-Type': 'application/json'});
-    dev.log('POST ${uri.toString()}  body=${jsonEncode(body)}', name: 'ApiClient');
+    print('[API] POST $uri  body=${jsonEncode(body)}');
     final response = await _client.post(uri, headers: headers, body: jsonEncode(body));
     return _handleResponse(path, response);
   }
@@ -41,7 +40,7 @@ class ApiClient {
   Future<dynamic> postForm(String path, Map<String, String> body) async {
     final uri = Uri.parse('$baseUrl$path');
     final headers = await _headers();
-    dev.log('POST(FORM) ${uri.toString()}  body=$body', name: 'ApiClient');
+    print('[API] POST(FORM) $uri  body=$body');
     final response = await _client.post(uri, headers: headers, body: body);
     return _handleResponse(path, response);
   }
@@ -61,20 +60,21 @@ class ApiClient {
     request.fields.addAll(fields);
     request.files.add(await http.MultipartFile.fromPath(fileField, filePath));
 
-    dev.log('POST(MULTIPART) ${uri.toString()}  fields=$fields  file=$filePath', name: 'ApiClient');
+    print('[API] POST(MULTIPART) $uri  fields=$fields  file=$filePath');
     final streamed = await _client.send(request);
     final response = await http.Response.fromStream(streamed);
     return _handleResponse(path, response);
   }
 
   dynamic _handleResponse(String path, http.Response response) {
-    final hasToken = response.statusCode >= 200 && response.statusCode < 300;
-    dev.log(
-      '${response.statusCode} $path  ${hasToken ? "OK" : response.body}',
-      name: 'ApiClient',
-    );
+    final isSuccess = response.statusCode >= 200 && response.statusCode < 300;
+    if (isSuccess) {
+      print('[API] ${response.statusCode} $path');
+    } else {
+      print('[API] ERROR ${response.statusCode} $path  body=${response.body}');
+    }
 
-    if (hasToken) {
+    if (isSuccess) {
       if (response.body.isEmpty) return null;
       return jsonDecode(response.body);
     }

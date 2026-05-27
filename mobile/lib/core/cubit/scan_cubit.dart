@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer' as dev;
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import '../models/scan_state.dart';
@@ -52,6 +51,7 @@ class ScanCubit extends Cubit<ScanResult?> {
     String classification,
     double confidence,
   ) {
+    print('[ScanCubit] Syncing to backend: $classification (${(confidence * 100).toStringAsFixed(1)}%)');
     _scanRepository
         .syncScan(
           imagePath: imagePath,
@@ -59,12 +59,8 @@ class ScanCubit extends Cubit<ScanResult?> {
           confidence: confidence,
         )
         .then(
-          (_) => dev.log('Scan synced to backend', name: 'ScanCubit'),
-          onError: (e, st) => dev.log(
-            'Failed to sync scan: $e',
-            name: 'ScanCubit',
-            stackTrace: st,
-          ),
+          (_) => print('[ScanCubit] Sync successful'),
+          onError: (e, st) => print('[ScanCubit] Sync failed: $e'),
         );
   }
 
