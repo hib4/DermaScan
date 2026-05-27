@@ -68,6 +68,24 @@ void main() {
         throwsA(isA<ServerException>()),
       );
     });
+
+    test('422 validation error extracts human-readable message from list', () async {
+      final client = MockClient((_) async => http.Response(
+          jsonEncode({
+            'detail': [
+              {'loc': ['body', 'email'], 'msg': 'value is not a valid email'},
+            ],
+          }),
+          422));
+      expect(
+        () => ApiClient(client: client, storage: storage).post('/x', {}),
+        throwsA(isA<ApiException>().having(
+          (e) => e.message,
+          'message',
+          contains('body.email: value is not a valid email'),
+        )),
+      );
+    });
   });
 }
 

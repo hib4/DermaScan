@@ -66,6 +66,21 @@ class ApiClient {
     return _handleResponse(path, response);
   }
 
+  String _extractMessage(dynamic body, int statusCode) {
+    if (body == null) return 'Request failed: $statusCode';
+    final detail = body['detail'];
+    if (detail is String) return detail;
+    if (detail is List) {
+      final messages = detail.whereType<Map>().map((e) {
+        final loc = (e['loc'] as List?)?.join('.') ?? '';
+        final msg = e['msg'] as String? ?? '';
+        return '$loc: $msg';
+      }).join('; ');
+      if (messages.isNotEmpty) return messages;
+    }
+    return 'Request failed: $statusCode';
+  }
+
   dynamic _handleResponse(String path, http.Response response) {
     final isSuccess = response.statusCode >= 200 && response.statusCode < 300;
     if (isSuccess) {
@@ -79,7 +94,7 @@ class ApiClient {
       return jsonDecode(response.body);
     }
     final body = _safeDecode(response.body);
-    final message = body?['detail'] ?? 'Request failed: ${response.statusCode}';
+    final message = _extractMessage(body, response.statusCode);
     switch (response.statusCode) {
       case 401:
         throw AuthException(message);
