@@ -34,8 +34,6 @@ class DermaScanApp extends StatelessWidget {
   final ScanRepository scanRepository;
   const DermaScanApp({super.key, required this.authCubit, required this.scanRepository});
 
-  static final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -43,20 +41,12 @@ class DermaScanApp extends StatelessWidget {
         BlocProvider.value(value: authCubit),
         BlocProvider(create: (_) => ScanCubit(scanRepository: scanRepository)),
       ],
-      child: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, state) {
-          if (state is AuthError) {
-            _scaffoldMessengerKey.currentState?.showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
-          }
-        },
+      child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, authState) {
           final initialLocation = (authState is AuthAuthenticated)
               ? AppConstants.home
               : AppConstants.onboarding;
           return MaterialApp.router(
-            scaffoldMessengerKey: _scaffoldMessengerKey,
             title: AppConstants.appName,
             debugShowCheckedModeBanner: false,
             theme: AppTheme.light,
