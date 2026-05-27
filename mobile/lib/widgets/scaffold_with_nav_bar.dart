@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../core/constants/app_constants.dart';
 
 /// Bottom navigation shell for Home, History, and Settings tabs.
-/// Uses go_router's StatefulNavigationShell to preserve tab state.
 class ScaffoldWithNavBar extends StatelessWidget {
-  final StatefulNavigationShell shell;
+  const ScaffoldWithNavBar({super.key, required this.child});
 
-  const ScaffoldWithNavBar({super.key, required this.shell});
+  final Widget child;
 
-  void _goToBranch(int index) {
-    shell.goBranch(index, initialLocation: index == shell.currentIndex);
+  void _goTo(BuildContext context, String path) {
+    context.replace(path);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: shell,
+      body: child,
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: shell.currentIndex,
-        onTap: _goToBranch,
+        currentIndex: _currentIndex(context),
+        onTap: (index) {
+          switch (index) {
+            case 0: _goTo(context, AppConstants.home); break;
+            case 1: _goTo(context, AppConstants.history); break;
+            case 2: _goTo(context, AppConstants.settings); break;
+          }
+        },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
@@ -38,5 +44,12 @@ class ScaffoldWithNavBar extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  int _currentIndex(BuildContext context) {
+    final location = GoRouterState.of(context).uri.path;
+    if (location == AppConstants.history) return 1;
+    if (location == AppConstants.settings) return 2;
+    return 0;
   }
 }

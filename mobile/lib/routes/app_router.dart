@@ -39,7 +39,12 @@ class AppRouter {
               state.matchedLocation == AppConstants.onboarding ||
               state.matchedLocation == AppConstants.registration;
           if (!isAuth && !isAuthRoute) return AppConstants.login;
-          if (isAuth && isAuthRoute) return AppConstants.home;
+          if (isAuth && isAuthRoute) {
+            // Replace instead of push to avoid transition animation
+            if (state.uri.path != AppConstants.home) {
+              return AppConstants.home;
+            }
+          }
           return null;
         },
         routes: [
@@ -63,8 +68,7 @@ class AppRouter {
               return BlocProvider(
                 create: (_) => ScanHistoryCubit(
                     repository: ScanRepository(apiClient: apiClient)),
-                child: ScaffoldWithNavBar(
-                    shell: child as StatefulNavigationShell),
+                child: ScaffoldWithNavBar(child: child),
               );
             },
             routes: [
