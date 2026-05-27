@@ -38,7 +38,6 @@ class AppRouter {
               state.matchedLocation == AppConstants.onboarding ||
               state.matchedLocation == AppConstants.registration;
           if (!isAuth && !isAuthRoute) return AppConstants.login;
-          if (isAuth && isAuthRoute) return AppConstants.shell;
           return null;
         },
         routes: [
