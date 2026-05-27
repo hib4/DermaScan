@@ -81,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SnackBar(content: Text(state.message)),
                     );
                   } else if (state is AuthAuthenticated) {
-                    context.replace(AppConstants.shell);
+                    context.go(AppConstants.shell);
                   }
                 },
                 builder: (context, state) {

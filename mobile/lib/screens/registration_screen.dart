@@ -102,7 +102,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       SnackBar(content: Text(state.message)),
                     );
                   } else if (state is AuthAuthenticated) {
-                    context.replace(AppConstants.shell);
+                    context.go(AppConstants.shell);
                   }
                 },
                 builder: (context, state) {
