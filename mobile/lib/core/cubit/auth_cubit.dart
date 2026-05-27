@@ -44,7 +44,7 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       await _authService.register(email: email, password: password);
       print('[AuthCubit] Register successful');
-      emit(AuthUnauthenticated());
+      emit(AuthAuthenticated());
     } on ConflictException catch (e) {
       print('[AuthCubit] Register failed: ${e.message}');
       emit(AuthError(e.message));

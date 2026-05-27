@@ -7,12 +7,12 @@ from app.core.security import create_access_token, hash_password, verify_passwor
 from app.db.session import get_db
 from app.models.user import User
 from app.schemas.token import OAuthPayload, Token
-from app.schemas.user import UserCreate, UserResponse
+from app.schemas.user import UserCreate
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 
-@router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
 async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)):
     hashed = hash_password(payload.password)
     user = User(email=payload.email, hashed_password=hashed)
@@ -26,7 +26,8 @@ async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)):
             detail="Email already registered",
         )
     await db.refresh(user)
-    return user
+    token = create_access_token(user.id)
+    return Token(access_token=token, token_type="bearer")
 
 
 @router.post("/login", response_model=Token)

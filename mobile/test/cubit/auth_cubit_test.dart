@@ -49,11 +49,11 @@ void main() {
     );
 
     blocTest<AuthCubit, AuthState>(
-      'register success -> Unauthenticated',
+      'register success -> Authenticated',
       build: () => AuthCubit(authService: _auth(
-        c: MockClient((_) async => http.Response(jsonEncode({'id': '1'}), 201)))),
+        c: MockClient((_) async => http.Response(jsonEncode({'access_token': 'jwt'}), 201)))),
       act: (c) => c.register(email: 'a@b.com', password: 'pw'),
-      expect: () => [isA<AuthLoading>(), isA<AuthUnauthenticated>()],
+      expect: () => [isA<AuthLoading>(), isA<AuthAuthenticated>()],
     );
 
     blocTest<AuthCubit, AuthState>(
