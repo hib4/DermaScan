@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import '../../core/constants/app_constants.dart';
+import '../../core/extensions/navigator_extensions.dart';
+import '../../routes/app_router.dart';
+import '../results_screen.dart';
 import '../../core/cubit/scan_cubit.dart';
 
 /// Loading screen that runs the full TFLite inference pipeline.
@@ -23,7 +24,7 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
 
   Future<void> _runInference() async {
     if (widget.imagePath == null) {
-      if (mounted) context.go(AppConstants.home);
+      if (mounted) context.pushReplacement(const ShellRoute());
       return;
     }
 
@@ -32,7 +33,7 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
       await cubit.runInference(widget.imagePath!);
 
       if (!mounted) return;
-      context.push(AppConstants.results);
+      context.push(const ResultsScreen());
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

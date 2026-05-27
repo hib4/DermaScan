@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import '../core/constants/app_constants.dart';
+import '../core/extensions/navigator_extensions.dart';
+import 'login_screen.dart';
 import '../widgets/primary_button.dart';
 
 class OnboardingScreen extends StatelessWidget {
@@ -47,7 +47,7 @@ class OnboardingScreen extends StatelessWidget {
                       const Spacer(),
                       PrimaryButton(
                         text: 'Get Started',
-                        onPressed: () => context.go(AppConstants.login),
+                        onPressed: () => context.pushReplacement(const LoginScreen()),
                       ),
                       const SizedBox(height: 16),
                     ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../core/extensions/navigator_extensions.dart';
+import 'login_screen.dart';
 import '../core/cubit/auth_cubit.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -46,6 +48,7 @@ class SettingsScreen extends StatelessWidget {
             onPressed: () {
               Navigator.of(ctx).pop();
               context.read<AuthCubit>().logout();
+              context.pushReplacement(const LoginScreen());
             },
             child: Text(
               'Logout',

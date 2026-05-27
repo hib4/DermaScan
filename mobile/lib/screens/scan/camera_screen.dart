@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../core/constants/app_constants.dart';
+import '../../core/extensions/navigator_extensions.dart';
+import 'processing_screen.dart';
 import '../../core/services/camera_service.dart';
 import '../../widgets/primary_button.dart';
 
@@ -92,7 +92,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
       final xFile = await _cameraService.capturePicture();
       if (!mounted) return;
 
-      context.push('${AppConstants.processing}?path=${xFile.path}');
+      context.push(ProcessingScreen(imagePath: xFile.path));
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -111,7 +111,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
       final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
       if (image == null || !mounted) return;
 
-      context.push('${AppConstants.processing}?path=${image.path}');
+      context.push(ProcessingScreen(imagePath: image.path));
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

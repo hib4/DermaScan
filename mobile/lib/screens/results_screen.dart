@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import '../core/constants/app_constants.dart';
+import '../core/extensions/navigator_extensions.dart';
+import '../routes/app_router.dart';
+import 'scan/camera_screen.dart';
 import '../core/cubit/scan_cubit.dart';
 import '../theme/app_colors.dart';
 import '../widgets/custom_card.dart';
@@ -33,10 +34,7 @@ class ResultsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               TextButton.icon(
-                onPressed: () {
-                  context.pop();
-                  context.go(AppConstants.camera);
-                },
+              onPressed: () => context.pushReplacement(const CameraScreen()),
                 icon: const Icon(Icons.camera_alt),
                 label: const Text('Try Again'),
               ),
@@ -127,10 +125,7 @@ class ResultsScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: OutlinedButton.icon(
-                    onPressed: () {
-                      context.pop();
-                      context.go(AppConstants.camera);
-                    },
+                    onPressed: () => context.pushReplacement(const CameraScreen()),
                     icon: const Icon(Icons.camera_alt),
                     label: const Text('New Scan'),
                   ),
@@ -138,7 +133,7 @@ class ResultsScreen extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: FilledButton.icon(
-                    onPressed: () => context.go(AppConstants.home),
+                    onPressed: () => context.pushReplacement(const ShellRoute()),
                     icon: const Icon(Icons.home),
                     label: const Text('Home'),
                   ),

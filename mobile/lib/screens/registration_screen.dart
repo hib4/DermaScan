@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import '../core/constants/app_constants.dart';
+import '../core/extensions/navigator_extensions.dart';
+import '../routes/app_router.dart';
+import 'login_screen.dart';
 import '../core/cubit/auth_cubit.dart';
 import '../core/cubit/auth_states.dart';
 import '../widgets/custom_text_field.dart';
@@ -102,7 +103,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       SnackBar(content: Text(state.message)),
                     );
                   } else if (state is AuthAuthenticated) {
-                    context.go(AppConstants.shell);
+                    context.pushReplacement(const ShellRoute());
                   }
                 },
                 builder: (context, state) {
@@ -117,7 +118,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       const SizedBox(height: 12),
                       SecondaryButton(
                         text: 'Back to Login',
-                        onPressed: loading ? null : () => context.go(AppConstants.login),
+                        onPressed: loading ? null : () => context.pushReplacement(const LoginScreen()),
                       ),
                     ],
                   );

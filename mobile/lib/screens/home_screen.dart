@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import '../core/constants/app_constants.dart';
+import '../core/extensions/navigator_extensions.dart';
+import 'scan/camera_screen.dart';
 import '../widgets/custom_card.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               CustomCard(
-                onTap: () => context.push(AppConstants.camera),
+                onTap: () => context.push(const CameraScreen()),
                 child: Padding(
                   padding: const EdgeInsets.all(32),
                   child: Column(

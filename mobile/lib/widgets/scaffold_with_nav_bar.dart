@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
+import '../screens/history_screen.dart';
+import '../screens/home_screen.dart';
+import '../screens/settings_screen.dart';
 
 /// Bottom navigation shell for Home, History, and Settings tabs.
 /// Manages tabs locally with IndexedStack to avoid route transition animations.
 class ScaffoldWithNavBar extends StatefulWidget {
-  const ScaffoldWithNavBar({
-    super.key,
-    required this.home,
-    required this.history,
-    required this.settings,
-  });
-
-  final Widget home;
-  final Widget history;
-  final Widget settings;
+  const ScaffoldWithNavBar({super.key});
 
   @override
   State<ScaffoldWithNavBar> createState() => _ScaffoldWithNavBarState();
@@ -26,7 +20,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
-        children: [widget.home, widget.history, widget.settings],
+        children: const [HomeScreen(), HistoryScreen(), SettingsScreen()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
