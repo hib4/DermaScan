@@ -4,6 +4,7 @@ import '../../core/extensions/navigator_extensions.dart';
 import '../../routes/app_router.dart';
 import '../results_screen.dart';
 import '../../core/cubit/scan_cubit.dart';
+import '../../widgets/analysis_loading_state.dart';
 
 /// Loading screen that runs the full TFLite inference pipeline.
 class ProcessingScreen extends StatefulWidget {
@@ -48,40 +49,9 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: 48,
-                height: 48,
-                child: CircularProgressIndicator(
-                  strokeWidth: 3,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    theme.colorScheme.primary,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
-              Text(
-                'Analyzing image...',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: theme.colorScheme.onSurface,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Running AI detection model',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.5),
-                ),
-              ),
-            ],
-          ),
-        ),
+        child: AnalysisLoadingState(),
       ),
     );
   }

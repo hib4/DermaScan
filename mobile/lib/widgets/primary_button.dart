@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Primary CTA button — near-black background with white text.
+/// Primary CTA button — Action Blue pill with white text.
 /// Supports enabled, disabled, and loading states.
 class PrimaryButton extends StatelessWidget {
   final String text;
@@ -23,13 +23,14 @@ class PrimaryButton extends StatelessWidget {
       onPressed: isDisabled || isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: isDisabled
-            ? theme.colorScheme.onSurface.withOpacity(0.12)
+            ? theme.colorScheme.onSurface.withValues(alpha: 0.12)
             : theme.colorScheme.primary,
         foregroundColor: isDisabled
-            ? theme.colorScheme.onSurface.withOpacity(0.38)
+            ? theme.colorScheme.onSurface.withValues(alpha: 0.38)
             : theme.colorScheme.onPrimary,
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        minimumSize: const Size(44, 50),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
         elevation: 0,
       ),
       child: isLoading
@@ -40,7 +41,7 @@ class PrimaryButton extends StatelessWidget {
                 strokeWidth: 2,
                 valueColor: AlwaysStoppedAnimation<Color>(
                   isDisabled
-                      ? theme.colorScheme.onSurface.withOpacity(0.38)
+                      ? theme.colorScheme.onSurface.withValues(alpha: 0.38)
                       : theme.colorScheme.onPrimary,
                 ),
               ),

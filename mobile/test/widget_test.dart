@@ -1,5 +1,4 @@
 import 'package:dermascan/core/cubit/auth_cubit.dart';
-import 'package:dermascan/core/cubit/auth_states.dart';
 import 'package:dermascan/core/network/api_client.dart';
 import 'package:dermascan/core/services/auth_service.dart';
 import 'package:dermascan/core/services/scan_repository.dart';

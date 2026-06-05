@@ -38,14 +38,13 @@ void main() {
 
     testWidgets('shows email and password fields', (tester) async {
       await tester.pumpWidget(build());
-      expect(find.text('Welcome back'), findsOneWidget);
+      expect(find.text('Sign in'), findsOneWidget);
       expect(find.byType(TextFormField), findsNWidgets(2));
     });
 
     testWidgets('shows error when fields are empty', (tester) async {
       await tester.pumpWidget(build());
-      // Tap the first widget with text 'Login' (the button)
-      await tester.tap(find.text('Login'));
+      await tester.tap(find.text('Sign In'));
       await tester.pump();
       expect(find.text('Please fill in all fields'), findsOneWidget);
     });

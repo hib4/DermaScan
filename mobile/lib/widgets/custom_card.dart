@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_shadows.dart';
 
-/// Reusable card surface with optional elevation and accent color bar.
+/// Reusable quiet utility surface.
 class CustomCard extends StatelessWidget {
   final Widget child;
   final int elevationLevel;
@@ -19,16 +19,13 @@ class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final shadows = AppShadows.byLevel(elevationLevel);
-    final hasBorder = elevationLevel <= 1;
+    final shadows = elevationLevel >= 4 ? AppShadows.byLevel(elevationLevel) : AppShadows.flat;
 
     Widget card = Container(
       decoration: BoxDecoration(
         color: theme.cardTheme.color,
-        borderRadius: BorderRadius.circular(8),
-        border: hasBorder
-            ? Border.all(color: theme.dividerColor)
-            : null,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: theme.dividerColor),
         boxShadow: shadows,
       ),
       clipBehavior: Clip.antiAlias,
@@ -44,7 +41,7 @@ class CustomCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: accentColor,
               borderRadius: const BorderRadius.horizontal(
-                left: Radius.circular(8),
+                left: Radius.circular(18),
               ),
             ),
           ),
@@ -57,7 +54,7 @@ class CustomCard extends StatelessWidget {
       card = Material(
         color: Colors.transparent,
         clipBehavior: Clip.antiAlias,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(18),
         child: InkWell(
           onTap: onTap,
           child: card,

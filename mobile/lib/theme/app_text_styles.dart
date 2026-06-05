@@ -1,125 +1,103 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-/// Typography constants derived from DESIGN.md using Inter font.
+/// Typography constants derived from DESIGN.md using the platform system font.
 class AppTextStyles {
   AppTextStyles._();
 
-  static TextStyle Function() get _inter => GoogleFonts.inter;
+  static const String _family = '.SF Pro Text';
 
-  // Display styles
-  static TextStyle displayXXL = _inter().copyWith(
-    fontSize: 80,
-    fontWeight: FontWeight.w600,
-    height: 83.2 / 80,
-    letterSpacing: -0.8,
-  );
-
-  static TextStyle displayXL = _inter().copyWith(
+  static TextStyle heroDisplay = const TextStyle(
+    fontFamily: _family,
     fontSize: 56,
     fontWeight: FontWeight.w600,
-    height: 58.24 / 56,
+    height: 1.07,
+    letterSpacing: -0.28,
   );
 
-  static TextStyle displayLG = _inter().copyWith(
-    fontSize: 44.8,
+  static TextStyle displayLG = const TextStyle(
+    fontFamily: _family,
+    fontSize: 40,
     fontWeight: FontWeight.w600,
-    height: 46.6 / 44.8,
+    height: 1.1,
   );
 
-  static TextStyle displayMD = _inter().copyWith(
-    fontSize: 32,
-    fontWeight: FontWeight.w500,
-    height: 41.6 / 32,
+  static TextStyle displayMD = const TextStyle(
+    fontFamily: _family,
+    fontSize: 34,
+    fontWeight: FontWeight.w600,
+    height: 1.2,
+    letterSpacing: -0.374,
   );
 
-  static TextStyle displaySM = _inter().copyWith(
+  static TextStyle title = const TextStyle(
+    fontFamily: _family,
+    fontSize: 28,
+    fontWeight: FontWeight.w600,
+    height: 1.14,
+  );
+
+  static TextStyle tagline = const TextStyle(
+    fontFamily: _family,
+    fontSize: 21,
+    fontWeight: FontWeight.w600,
+    height: 1.19,
+    letterSpacing: 0.231,
+  );
+
+  static TextStyle body = const TextStyle(
+    fontFamily: _family,
+    fontSize: 17,
+    fontWeight: FontWeight.w400,
+    height: 1.47,
+    letterSpacing: -0.374,
+  );
+
+  static TextStyle bodyStrong = body.copyWith(fontWeight: FontWeight.w600);
+
+  static TextStyle lead = const TextStyle(
+    fontFamily: _family,
     fontSize: 24,
-    fontWeight: FontWeight.w500,
-    height: 31.2 / 24,
+    fontWeight: FontWeight.w300,
+    height: 1.5,
   );
 
-  static TextStyle displayXS = _inter().copyWith(
-    fontSize: 20,
-    fontWeight: FontWeight.w500,
-    height: 28 / 20,
+  static TextStyle caption = const TextStyle(
+    fontFamily: _family,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    height: 1.43,
+    letterSpacing: -0.224,
   );
 
-  // Eyebrow styles
-  static TextStyle eyebrow = _inter().copyWith(
-    fontSize: 15,
-    fontWeight: FontWeight.w500,
-    height: 19.5 / 15,
-    letterSpacing: 1.5,
+  static TextStyle captionStrong = caption.copyWith(fontWeight: FontWeight.w600);
+
+  static TextStyle button = const TextStyle(
+    fontFamily: _family,
+    fontSize: 17,
+    fontWeight: FontWeight.w400,
+    height: 1.0,
   );
 
-  static TextStyle eyebrowSM = _inter().copyWith(
+  static TextStyle finePrint = const TextStyle(
+    fontFamily: _family,
     fontSize: 12,
-    fontWeight: FontWeight.w500,
-    height: 12 / 12,
-    letterSpacing: 0.6,
-  );
-
-  // Body styles
-  static TextStyle bodyLG = _inter().copyWith(
-    fontSize: 28.8,
     fontWeight: FontWeight.w400,
-    height: 46.08 / 28.8,
-    letterSpacing: -0.288,
-  );
-
-  static TextStyle bodyMD = _inter().copyWith(
-    fontSize: 16,
-    fontWeight: FontWeight.w400,
-    height: 25.6 / 16,
-    letterSpacing: -0.16,
-  );
-
-  static TextStyle bodyMDStrong = _inter().copyWith(
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-    height: 25.6 / 16,
-    letterSpacing: -0.16,
-  );
-
-  static TextStyle bodySM = _inter().copyWith(
-    fontSize: 14,
-    fontWeight: FontWeight.w400,
-    height: 22.4 / 14,
-  );
-
-  static TextStyle bodySMStrong = _inter().copyWith(
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    height: 22.4 / 14,
-  );
-
-  // Caption and button
-  static TextStyle caption = _inter().copyWith(
-    fontSize: 12.8,
-    fontWeight: FontWeight.w500,
-    height: 15.36 / 12.8,
-  );
-
-  static TextStyle buttonMD = _inter().copyWith(
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-    height: 25.6 / 16,
-    letterSpacing: -0.16,
+    height: 1.3,
+    letterSpacing: -0.12,
   );
 
   /// Complete TextTheme mapped to Flutter's Material roles.
   static TextTheme get textTheme => TextTheme(
-        headlineLarge: displayXXL,
-        headlineMedium: displayXL,
+        headlineLarge: heroDisplay,
+        headlineMedium: displayLG,
         headlineSmall: displayLG,
         titleLarge: displayMD,
-        titleMedium: displaySM,
-        titleSmall: displayXS,
-        labelLarge: eyebrow,
-        bodyLarge: bodyLG,
-        bodyMedium: bodyMD,
-        bodySmall: bodySM,
+        titleMedium: title,
+        titleSmall: tagline,
+        labelLarge: captionStrong,
+        bodyLarge: lead,
+        bodyMedium: body,
+        bodySmall: caption,
         labelSmall: caption,
       );
 }

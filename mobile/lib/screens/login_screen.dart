@@ -6,8 +6,10 @@ import 'registration_screen.dart';
 import '../core/cubit/auth_cubit.dart';
 import '../core/cubit/auth_states.dart';
 import '../widgets/custom_text_field.dart';
+import '../widgets/disclaimer_banner.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/secondary_button.dart';
+import '../widgets/text_link.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -45,27 +47,30 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 48),
+          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 40),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Welcome back',
-                style: theme.textTheme.titleLarge?.copyWith(
+                'Sign in',
+                style: theme.textTheme.headlineMedium?.copyWith(
                   color: theme.colorScheme.onSurface,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               Text(
-                'Sign in to continue',
+                'Continue to your scan history and saved screening results.',
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.68),
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 30),
+              const DisclaimerBanner(),
+              const SizedBox(height: 28),
               CustomTextField(
                 controller: _email,
                 labelText: 'Email',
+                hintText: 'name@example.com',
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 16),
@@ -90,14 +95,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   return Column(
                     children: [
                       PrimaryButton(
-                        text: 'Login',
+                        text: 'Sign In',
                         onPressed: loading ? null : _onLogin,
                         isLoading: loading,
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 10),
                       SecondaryButton(
                         text: 'Create Account',
                         onPressed: loading ? null : () => context.push(const RegistrationScreen()),
+                      ),
+                      const SizedBox(height: 12),
+                      TextLink(
+                        text: 'DermaScan uses email and password sign-in in this version.',
+                        onPressed: null,
                       ),
                     ],
                   );

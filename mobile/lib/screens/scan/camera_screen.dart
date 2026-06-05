@@ -1,11 +1,16 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../core/extensions/navigator_extensions.dart';
+import '../../core/utils/image_quality_evaluator.dart';
+import '../../theme/app_colors.dart';
 import 'processing_screen.dart';
 import '../../core/services/camera_service.dart';
+import '../../widgets/quality_warning_card.dart';
 import '../../widgets/primary_button.dart';
+import '../../widgets/secondary_button.dart';
 
 /// Camera screen with preview, frame guide, capture, and gallery upload.
 class CameraScreen extends StatefulWidget {
@@ -23,7 +28,6 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
   bool _isCapturing = false;
   String? _error;
 
-  // Placeholder quality alert state
   String? _qualityWarning;
 
   Timer? _qualityCheckTimer;
@@ -92,7 +96,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
       final xFile = await _cameraService.capturePicture();
       if (!mounted) return;
 
-      context.push(ProcessingScreen(imagePath: xFile.path));
+      await _continueWithImage(xFile.path);
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -111,13 +115,60 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
       final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
       if (image == null || !mounted) return;
 
-      context.push(ProcessingScreen(imagePath: image.path));
+      await _continueWithImage(image.path);
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to pick image: $e')),
         );
       }
+    }
+  }
+
+  Future<void> _continueWithImage(String imagePath) async {
+    final quality = await ImageQualityEvaluator.evaluate(File(imagePath));
+    if (!mounted) return;
+
+    if (quality.isAcceptable) {
+      context.push(ProcessingScreen(imagePath: imagePath));
+      return;
+    }
+
+    setState(() => _qualityWarning = quality.message);
+    final proceed = await showModalBottomSheet<bool>(
+      context: context,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 22, 24, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              QualityWarningCard(
+                message: quality.message ?? 'Image quality could be improved. Try another photo.',
+              ),
+              const SizedBox(height: 18),
+              PrimaryButton(
+                text: 'Retake Photo',
+                onPressed: () => Navigator.of(context).pop(false),
+              ),
+              const SizedBox(height: 10),
+              SecondaryButton(
+                text: 'Analyze Anyway',
+                onPressed: () => Navigator.of(context).pop(true),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    if (proceed == true && mounted) {
+      context.push(ProcessingScreen(imagePath: imagePath));
     }
   }
 
@@ -146,7 +197,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
     }
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: AppColors.surfaceBlack,
       body: Stack(
         children: [
           // Camera preview
@@ -169,7 +220,6 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                       icon: const Icon(Icons.close, color: Colors.white),
                       onPressed: () => context.pop(),
                     ),
-                    // Quality alert placeholder
                     if (_qualityWarning != null)
                       Container(
                         padding: const EdgeInsets.symmetric(
@@ -177,22 +227,22 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.orange.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(4),
+                          color: Colors.white.withValues(alpha: 0.92),
+                          borderRadius: BorderRadius.circular(999),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             const Icon(
-                              Icons.warning_amber_rounded,
-                              color: Colors.white,
+                              Icons.info_outline,
+                              color: AppColors.accentOrange,
                               size: 16,
                             ),
                             const SizedBox(width: 6),
                             Text(
                               _qualityWarning!,
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: AppColors.ink,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -228,7 +278,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                   horizontal: 32,
                   vertical: 24,
                 ),
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.black.withValues(alpha: 0.52),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -239,10 +289,10 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withValues(alpha: 0.16),
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: Colors.white.withOpacity(0.5),
+                            color: Colors.white.withValues(alpha: 0.5),
                             width: 1.5,
                           ),
                         ),
@@ -289,7 +339,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                 Icon(
                   Icons.camera_alt_outlined,
                   size: 64,
-                  color: theme.colorScheme.onSurface.withOpacity(0.3),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -302,7 +352,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                 Text(
                   _error!,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.5),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -334,7 +384,7 @@ class _FrameGuidePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.6)
+      ..color = Colors.white.withValues(alpha: 0.6)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 

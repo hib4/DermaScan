@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/constants/app_constants.dart';
 import 'core/cubit/scan_cubit.dart';
+import 'core/cubit/scan_history_cubit.dart';
 import 'core/cubit/auth_cubit.dart';
 import 'core/cubit/auth_states.dart';
 import 'core/network/api_client.dart';
@@ -40,6 +41,7 @@ class DermaScanApp extends StatelessWidget {
       providers: [
         BlocProvider.value(value: authCubit),
         BlocProvider(create: (_) => ScanCubit(scanRepository: scanRepository)),
+        BlocProvider(create: (_) => ScanHistoryCubit(repository: scanRepository)),
       ],
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, authState) {

@@ -3,8 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../core/cubit/scan_history_cubit.dart';
 import '../core/cubit/scan_history_states.dart';
 import '../core/models/scan_model.dart';
+import '../core/extensions/navigator_extensions.dart';
 import '../theme/app_colors.dart';
-import '../widgets/custom_card.dart';
+import '../widgets/empty_state.dart';
+import '../widgets/history_item.dart';
+import 'results_screen.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
@@ -45,91 +48,37 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final theme = Theme.of(context);
     return RefreshIndicator(
       onRefresh: () => context.read<ScanHistoryCubit>().loadHistory(),
-      child: ListView.separated(
-        padding: const EdgeInsets.all(16),
-        itemCount: scans.length,
-        separatorBuilder: (_, __) => const SizedBox(height: 12),
-        itemBuilder: (context, index) {
-          final scan = scans[index];
-          return CustomCard(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Row(
-                children: [
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.onSurface.withOpacity(0.08),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Icon(
-                      Icons.image_outlined,
-                      color: theme.colorScheme.onSurface.withOpacity(0.4),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          scan.classification,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onSurface,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          _formatDate(scan.createdAt),
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onSurface.withOpacity(0.5),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text(
-                    '${(scan.confidence * 100).toStringAsFixed(0)}%',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(0.6),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  const Icon(Icons.chevron_right),
-                ],
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(24, 26, 24, 34),
+        children: [
+          Text('History', style: theme.textTheme.headlineMedium),
+          const SizedBox(height: 10),
+          Text(
+            'Previous screenings appear in reverse chronological order.',
+            style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.mute),
+          ),
+          const SizedBox(height: 24),
+          ...scans.map(
+            (scan) => Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: HistoryItem(
+                scan: scan,
+                onTap: () => context.push(ResultsScreen(scan: scan)),
               ),
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildEmptyState() {
-    final theme = Theme.of(context);
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Icons.history_outlined, size: 64, color: AppColors.mute),
-          const SizedBox(height: 16),
-          Text(
-            'No scans yet',
-            style: theme.textTheme.titleMedium?.copyWith(
-              color: AppColors.bodyMid,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Your scan history will appear here',
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: AppColors.muteSoft,
-            ),
-          ),
-        ],
-      ),
+    return EmptyState(
+      icon: Icons.history_outlined,
+      title: 'No scans yet',
+      message: 'Your saved screening history will appear here after your first scan.',
+      actionLabel: 'Refresh',
+      onAction: () => context.read<ScanHistoryCubit>().loadHistory(),
     );
   }
 
@@ -159,13 +108,5 @@ class _HistoryScreenState extends State<HistoryScreen> {
         ],
       ),
     );
-  }
-
-  String _formatDate(DateTime date) {
-    const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-    ];
-    return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
 }

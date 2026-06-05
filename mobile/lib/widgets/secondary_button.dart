@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Secondary CTA button — transparent background with hairline border.
+/// Secondary CTA button — white pill with Action Blue text.
 class SecondaryButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
@@ -22,15 +22,17 @@ class SecondaryButton extends StatelessWidget {
       onPressed: isDisabled || isLoading ? null : onPressed,
       style: OutlinedButton.styleFrom(
         foregroundColor: isDisabled
-            ? theme.colorScheme.onSurface.withOpacity(0.38)
-            : theme.colorScheme.onSurface,
+            ? theme.colorScheme.onSurface.withValues(alpha: 0.38)
+            : theme.colorScheme.primary,
         side: BorderSide(
           color: isDisabled
-              ? theme.colorScheme.onSurface.withOpacity(0.12)
+              ? theme.colorScheme.onSurface.withValues(alpha: 0.12)
               : theme.dividerColor,
         ),
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+        backgroundColor: theme.colorScheme.surface,
+        minimumSize: const Size(44, 50),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
       ),
       child: isLoading
           ? SizedBox(
@@ -39,7 +41,7 @@ class SecondaryButton extends StatelessWidget {
               child: CircularProgressIndicator(
                 strokeWidth: 2,
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  theme.colorScheme.onSurface.withOpacity(0.38),
+                  theme.colorScheme.onSurface.withValues(alpha: 0.38),
                 ),
               ),
             )

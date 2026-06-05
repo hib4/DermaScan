@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../core/extensions/navigator_extensions.dart';
 import 'login_screen.dart';
 import '../core/cubit/auth_cubit.dart';
+import '../theme/app_colors.dart';
+import '../widgets/disclaimer_banner.dart';
+import '../widgets/health_info_card.dart';
+import '../widgets/secondary_button.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -10,25 +14,43 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
-      body: ListView(
-        children: [
-          _SettingsTile(icon: Icons.person_outline, title: 'Account'),
-          _SettingsTile(icon: Icons.notifications_outlined, title: 'Notifications'),
-          _SettingsTile(icon: Icons.shield_outlined, title: 'Privacy'),
-          _SettingsTile(icon: Icons.help_outline, title: 'Help & Support'),
-          _SettingsTile(icon: Icons.info_outline, title: 'About'),
-          const Divider(),
-          ListTile(
-            leading: Icon(Icons.logout, color: Theme.of(context).colorScheme.error),
-            title: Text(
-              'Logout',
-              style: TextStyle(color: Theme.of(context).colorScheme.error),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(24, 26, 24, 34),
+          children: [
+            Text('Profile', style: Theme.of(context).textTheme.headlineMedium),
+            const SizedBox(height: 12),
+            Text(
+              'Account settings, privacy information, and app preferences.',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.mute),
             ),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => _showLogoutDialog(context),
-          ),
-        ],
+            const SizedBox(height: 24),
+            const DisclaimerBanner(),
+            const SizedBox(height: 22),
+            const HealthInfoCard(
+              icon: Icons.person_outline,
+              title: 'Account',
+              body: 'Signed in with email and password.',
+            ),
+            const SizedBox(height: 12),
+            const HealthInfoCard(
+              icon: Icons.accessibility_new_outlined,
+              title: 'Accessibility',
+              body: 'DermaScan follows system text scaling and maintains large touch targets.',
+            ),
+            const SizedBox(height: 12),
+            const HealthInfoCard(
+              icon: Icons.privacy_tip_outlined,
+              title: 'Privacy and disclaimer',
+              body: 'Screening results are informational. Images are uploaded to your account history when online.',
+            ),
+            const SizedBox(height: 24),
+            SecondaryButton(
+              text: 'Logout',
+              onPressed: () => _showLogoutDialog(context),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -57,28 +79,6 @@ class SettingsScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _SettingsTile extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  const _SettingsTile({required this.icon, required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return ListTile(
-      leading: Icon(icon, color: theme.colorScheme.onSurface),
-      title: Text(
-        title,
-        style: theme.textTheme.bodySmall?.copyWith(
-          color: theme.colorScheme.onSurface,
-        ),
-      ),
-      trailing: const Icon(Icons.chevron_right),
-      onTap: () {},
     );
   }
 }

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../core/cubit/scan_history_cubit.dart';
-import '../core/network/api_client.dart';
-import '../core/services/scan_repository.dart';
-import '../core/services/secure_storage_service.dart';
 import '../screens/login_screen.dart';
 import '../screens/onboarding_screen.dart';
 import '../screens/registration_screen.dart';
 import '../screens/results_screen.dart';
+import '../core/models/scan_model.dart';
 import '../screens/scan/camera_screen.dart';
 import '../screens/scan/processing_screen.dart';
 import '../widgets/scaffold_with_nav_bar.dart';
@@ -25,7 +21,10 @@ class AppRouter {
           builder: (_) => ProcessingScreen(imagePath: imagePath),
         );
       case '/results':
-        return MaterialPageRoute(builder: (_) => const ResultsScreen());
+        final scan = settings.arguments is ScanModel
+            ? settings.arguments as ScanModel
+            : null;
+        return MaterialPageRoute(builder: (_) => ResultsScreen(scan: scan));
       case '/login':
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case '/register':
@@ -47,11 +46,6 @@ class ShellRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final storage = SecureStorageService.instance;
-    final apiClient = ApiClient(storage: storage);
-    return BlocProvider(
-      create: (_) => ScanHistoryCubit(repository: ScanRepository(apiClient: apiClient)),
-      child: const ScaffoldWithNavBar(),
-    );
+    return const ScaffoldWithNavBar();
   }
 }

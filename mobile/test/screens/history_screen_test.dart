@@ -36,7 +36,7 @@ void main() {
         ),
       ])));
       expect(find.text('Acne'), findsOneWidget);
-      expect(find.text('92%'), findsOneWidget);
+      expect(find.text('92% confidence • Routine'), findsOneWidget);
     });
 
     testWidgets('shows error state with retry button', (tester) async {

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import '../core/extensions/navigator_extensions.dart';
 import 'login_screen.dart';
+import '../theme/app_colors.dart';
+import '../widgets/disclaimer_banner.dart';
 import '../widgets/primary_button.dart';
+import '../widgets/secondary_button.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -10,54 +13,137 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final availableHeight = constraints.maxHeight - 96; // account for padding
-            final useCompact = availableHeight < 400;
-            return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 48),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: availableHeight > 0 ? availableHeight : 0),
-                child: IntrinsicHeight(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (!useCompact) const Spacer(),
-                      Text(
-                        'SKIN ANALYSIS',
-                        style: theme.textTheme.labelLarge?.copyWith(
-                          color: theme.colorScheme.onSurface.withOpacity(0.6),
+      backgroundColor: AppColors.surfaceBlack,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: DecoratedBox(
+              decoration: const BoxDecoration(color: AppColors.surfaceBlack),
+              child: CustomPaint(painter: _SkinTexturePainter()),
+            ),
+          ),
+          SafeArea(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(28, 32, 28, 24),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: constraints.maxHeight - 56),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          'DermaScan',
+                          style: theme.textTheme.headlineLarge?.copyWith(color: Colors.white),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Detect skin conditions\nwith AI',
-                        style: (useCompact ? theme.textTheme.titleLarge : theme.textTheme.headlineLarge)?.copyWith(
-                          color: theme.colorScheme.onSurface,
+                        const SizedBox(height: 14),
+                        Text(
+                          'AI-assisted skin screening, designed to be calm, fast, and medically responsible.',
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            color: Colors.white.withValues(alpha: 0.82),
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 24),
-                      Text(
-                        'Take a photo of your skin and get instant AI-powered analysis.',
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          color: theme.colorScheme.onSurface.withOpacity(0.7),
+                        const SizedBox(height: 34),
+                        _OnboardingPoint(
+                          icon: Icons.camera_alt_outlined,
+                          title: 'Capture or upload',
+                          body: 'Frame the skin area clearly in bright, even lighting.',
                         ),
-                      ),
-                      const Spacer(),
-                      PrimaryButton(
-                        text: 'Get Started',
-                        onPressed: () => context.pushReplacement(const LoginScreen()),
-                      ),
-                      const SizedBox(height: 16),
-                    ],
+                        _OnboardingPoint(
+                          icon: Icons.auto_awesome_outlined,
+                          title: 'Screen visual patterns',
+                          body: 'The model suggests a possible category with a confidence score.',
+                        ),
+                        _OnboardingPoint(
+                          icon: Icons.health_and_safety_outlined,
+                          title: 'Learn what to do next',
+                          body: 'Read plain-language information and seek care when appropriate.',
+                        ),
+                        const SizedBox(height: 28),
+                        const DisclaimerBanner(onDark: true),
+                        const SizedBox(height: 28),
+                        PrimaryButton(
+                          text: 'Get Started',
+                          onPressed: () => context.pushReplacement(const LoginScreen()),
+                        ),
+                        const SizedBox(height: 10),
+                        SecondaryButton(
+                          text: 'I understand',
+                          onPressed: () => context.pushReplacement(const LoginScreen()),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
-            );
-          },
-        ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
+}
+
+class _OnboardingPoint extends StatelessWidget {
+  const _OnboardingPoint({
+    required this.icon,
+    required this.title,
+    required this.body,
+  });
+
+  final IconData icon;
+  final String title;
+  final String body;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 22),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: AppColors.primaryOnDark, size: 26),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  body,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.white.withValues(alpha: 0.72),
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SkinTexturePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.05)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.2;
+    final center = Offset(size.width * 0.66, size.height * 0.24);
+    for (var i = 0; i < 10; i++) {
+      canvas.drawCircle(center, 48.0 + i * 28, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
