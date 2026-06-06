@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../core/extensions/navigator_extensions.dart';
 import 'login_screen.dart';
@@ -26,7 +27,7 @@ class OnboardingScreen extends StatelessWidget {
             child: LayoutBuilder(
               builder: (context, constraints) {
                 return SingleChildScrollView(
-                  padding: const EdgeInsets.fromLTRB(28, 32, 28, 24),
+                  padding: const EdgeInsets.fromLTRB(28, 32, 28, 0),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(minHeight: constraints.maxHeight - 56),
                     child: Column(
@@ -45,17 +46,17 @@ class OnboardingScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 34),
                         _OnboardingPoint(
-                          icon: Icons.camera_alt_outlined,
+                          icon: CupertinoIcons.camera,
                           title: 'Capture or upload',
                           body: 'Frame the skin area clearly in bright, even lighting.',
                         ),
                         _OnboardingPoint(
-                          icon: Icons.auto_awesome_outlined,
+                          icon: CupertinoIcons.sparkles,
                           title: 'Screen visual patterns',
                           body: 'The model suggests a possible category with a confidence score.',
                         ),
                         _OnboardingPoint(
-                          icon: Icons.health_and_safety_outlined,
+                          icon: CupertinoIcons.heart,
                           title: 'Learn what to do next',
                           body: 'Read plain-language information and seek care when appropriate.',
                         ),

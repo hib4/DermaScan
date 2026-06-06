@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,27 +41,31 @@ void main() {
     testWidgets('shows email, password, and confirm password fields',
         (tester) async {
       await tester.pumpWidget(build());
-      expect(find.byType(TextFormField), findsNWidgets(3));
+      expect(find.byType(CupertinoTextField), findsNWidgets(3));
     });
 
-    testWidgets('shows snackbar when passwords do not match', (tester) async {
+    testWidgets('shows toast when passwords do not match', (tester) async {
       await tester.pumpWidget(build());
-      final fields = find.byType(TextFormField);
+      final fields = find.byType(CupertinoTextField);
+      await tester.enterText(fields.at(0), 'a@b.com');
       await tester.enterText(fields.at(1), 'password123');
       await tester.enterText(fields.at(2), 'different');
       await tester.tap(find.byType(PrimaryButton));
-      await tester.pump(); // First pump to show snackbar
-      expect(find.byType(SnackBar), findsOneWidget);
+      await tester.pump();
+      expect(find.text('Passwords do not match'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 3));
     });
 
-    testWidgets('shows snackbar when password too short', (tester) async {
+    testWidgets('shows toast when password too short', (tester) async {
       await tester.pumpWidget(build());
-      final fields = find.byType(TextFormField);
+      final fields = find.byType(CupertinoTextField);
+      await tester.enterText(fields.at(0), 'a@b.com');
       await tester.enterText(fields.at(1), 'short');
       await tester.enterText(fields.at(2), 'short');
       await tester.tap(find.byType(PrimaryButton));
       await tester.pump();
-      expect(find.byType(SnackBar), findsOneWidget);
+      expect(find.text('Password must be at least 6 characters'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 3));
     });
   });
 }

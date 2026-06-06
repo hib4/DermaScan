@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../core/extensions/navigator_extensions.dart';
 import '../../core/models/condition_info.dart';
@@ -34,7 +35,7 @@ class ScanEntryScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.camera_alt_outlined, color: AppColors.primaryOnDark, size: 34),
+                    const Icon(CupertinoIcons.camera, color: AppColors.primaryOnDark, size: 34),
                     const SizedBox(height: 28),
                     Text(
                       'Center the lesion. Keep the phone steady.',
@@ -64,7 +65,7 @@ class ScanEntryScreen extends StatelessWidget {
                 (tip) => Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: HealthInfoCard(
-                    icon: Icons.check_circle_outline,
+                    icon: CupertinoIcons.check_mark_circled,
                     title: tip,
                     body: 'This helps the model evaluate visual patterns more consistently.',
                   ),

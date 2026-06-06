@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../core/models/condition_info.dart';
 import '../core/models/scan_model.dart';
@@ -18,18 +19,17 @@ class HistoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final info = ConditionLibrary.forLabel(scan.classification);
-    return Material(
-      color: Colors.transparent,
-      borderRadius: BorderRadius.circular(18),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
+    return CupertinoButton(
+      onPressed: onTap,
+      padding: EdgeInsets.zero,
+      minimumSize: const Size(44, 44),
+      borderRadius: BorderRadius.circular(22),
+      child: Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: theme.dividerColor),
+            color: AppColors.surfacePearl,
+            borderRadius: BorderRadius.circular(22),
+            border: Border.all(color: AppColors.dividerSoft),
           ),
           child: Row(
             children: [
@@ -57,11 +57,10 @@ class HistoryItem extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: AppColors.mute),
+              const Icon(CupertinoIcons.chevron_right, color: AppColors.mute, size: 18),
             ],
           ),
         ),
-      ),
     );
   }
 

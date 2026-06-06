@@ -23,8 +23,8 @@ class DisclaimerBanner extends StatelessWidget {
         decoration: BoxDecoration(
           color: onDark
               ? Colors.white.withValues(alpha: 0.09)
-              : AppColors.canvasParchment,
-          borderRadius: BorderRadius.circular(18),
+              : AppColors.surfacePearl,
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: onDark
                 ? Colors.white.withValues(alpha: 0.16)

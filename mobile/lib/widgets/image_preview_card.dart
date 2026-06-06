@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import '../theme/app_colors.dart';
 
 class ImagePreviewCard extends StatelessWidget {
@@ -17,7 +17,7 @@ class ImagePreviewCard extends StatelessWidget {
     final file = File(imagePath);
     final hasLocalImage = imagePath.isNotEmpty && file.existsSync();
     return ClipRRect(
-      borderRadius: BorderRadius.circular(18),
+      borderRadius: BorderRadius.circular(24),
       child: Container(
         width: double.infinity,
         height: height,
@@ -25,7 +25,7 @@ class ImagePreviewCard extends StatelessWidget {
         child: hasLocalImage
             ? Image.file(file, fit: BoxFit.cover)
             : const Center(
-                child: Icon(Icons.image_outlined, size: 42, color: AppColors.mute),
+                child: Icon(CupertinoIcons.photo, size: 42, color: AppColors.mute),
               ),
       ),
     );

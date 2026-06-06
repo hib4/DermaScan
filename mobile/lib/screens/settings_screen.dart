@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../core/extensions/navigator_extensions.dart';
@@ -28,19 +29,19 @@ class SettingsScreen extends StatelessWidget {
             const DisclaimerBanner(),
             const SizedBox(height: 22),
             const HealthInfoCard(
-              icon: Icons.person_outline,
+              icon: CupertinoIcons.person,
               title: 'Account',
               body: 'Signed in with email and password.',
             ),
             const SizedBox(height: 12),
             const HealthInfoCard(
-              icon: Icons.accessibility_new_outlined,
+              icon: CupertinoIcons.textformat_size,
               title: 'Accessibility',
               body: 'DermaScan follows system text scaling and maintains large touch targets.',
             ),
             const SizedBox(height: 12),
             const HealthInfoCard(
-              icon: Icons.privacy_tip_outlined,
+              icon: CupertinoIcons.lock_shield,
               title: 'Privacy and disclaimer',
               body: 'Screening results are informational. Images are uploaded to your account history when online.',
             ),
@@ -56,26 +57,24 @@ class SettingsScreen extends StatelessWidget {
   }
 
   void _showLogoutDialog(BuildContext context) {
-    showDialog(
+    showCupertinoDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
+      builder: (ctx) => CupertinoAlertDialog(
         title: const Text('Logout'),
         content: const Text('Are you sure you want to log out?'),
         actions: [
-          TextButton(
+          CupertinoDialogAction(
             onPressed: () => Navigator.of(ctx).pop(),
             child: const Text('Cancel'),
           ),
-          TextButton(
+          CupertinoDialogAction(
+            isDestructiveAction: true,
             onPressed: () {
               Navigator.of(ctx).pop();
               context.read<AuthCubit>().logout();
               context.pushReplacement(const LoginScreen());
             },
-            child: Text(
-              'Logout',
-              style: TextStyle(color: Theme.of(context).colorScheme.error),
-            ),
+            child: const Text('Logout'),
           ),
         ],
       ),

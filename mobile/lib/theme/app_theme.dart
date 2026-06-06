@@ -66,34 +66,6 @@ class AppTheme {
           ),
           margin: EdgeInsets.zero,
         ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.primary,
-            foregroundColor: AppColors.onPrimary,
-            textStyle: AppTextStyles.button,
-            minimumSize: const Size(44, 44),
-            padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 22),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
-            elevation: 0,
-          ),
-        ),
-        outlinedButtonTheme: OutlinedButtonThemeData(
-          style: OutlinedButton.styleFrom(
-            foregroundColor: AppColors.primary,
-            side: const BorderSide(color: AppColors.hairline),
-            textStyle: AppTextStyles.button,
-            minimumSize: const Size(44, 44),
-            padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 22),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
-          ),
-        ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: AppColors.canvas,
-          selectedItemColor: AppColors.primary,
-          unselectedItemColor: AppColors.mute,
-          type: BottomNavigationBarType.fixed,
-          elevation: 0,
-        ),
         dividerColor: AppColors.hairline,
         dividerTheme: const DividerThemeData(
           thickness: 1,
@@ -161,34 +133,6 @@ class AppTheme {
             side: const BorderSide(color: AppColors.darkHairline),
           ),
           margin: EdgeInsets.zero,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.darkPrimary,
-            foregroundColor: AppColors.darkOnPrimary,
-            textStyle: AppTextStyles.button,
-            minimumSize: const Size(44, 44),
-            padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 22),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
-            elevation: 0,
-          ),
-        ),
-        outlinedButtonTheme: OutlinedButtonThemeData(
-          style: OutlinedButton.styleFrom(
-            foregroundColor: AppColors.darkInk,
-            side: const BorderSide(color: AppColors.darkHairline),
-            textStyle: AppTextStyles.button,
-            minimumSize: const Size(44, 44),
-            padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 22),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
-          ),
-        ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: AppColors.darkCanvas,
-          selectedItemColor: AppColors.darkPrimary,
-          unselectedItemColor: AppColors.darkMute,
-          type: BottomNavigationBarType.fixed,
-          elevation: 0,
         ),
         dividerColor: AppColors.darkHairline,
         dividerTheme: const DividerThemeData(

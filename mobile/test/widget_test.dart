@@ -4,7 +4,7 @@ import 'package:dermascan/core/services/auth_service.dart';
 import 'package:dermascan/core/services/scan_repository.dart';
 import 'package:dermascan/core/services/storage_provider.dart';
 import 'package:dermascan/main.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
@@ -19,7 +19,7 @@ class _TestStorage implements StorageProvider {
 }
 
 void main() {
-  testWidgets('App renders DermaScanApp with MaterialApp.router', (tester) async {
+  testWidgets('App renders DermaScanApp with CupertinoApp', (tester) async {
     final storage = _TestStorage();
     final apiClient = ApiClient(
       client: MockClient((_) async => http.Response('{}', 200)),
@@ -34,6 +34,6 @@ void main() {
       authCubit: authCubit,
       scanRepository: scanRepo,
     ));
-    expect(find.byType(MaterialApp), findsOneWidget);
+    expect(find.byType(CupertinoApp), findsOneWidget);
   });
 }

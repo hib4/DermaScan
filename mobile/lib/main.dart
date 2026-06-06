@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,14 +49,29 @@ class DermaScanApp extends StatelessWidget {
           final initialRoute = (authState is AuthAuthenticated)
               ? AppConstants.home
               : AppConstants.onboarding;
-          return MaterialApp(
+          return CupertinoApp(
             title: AppConstants.appName,
             debugShowCheckedModeBanner: false,
-            theme: AppTheme.light,
-            darkTheme: AppTheme.dark,
-            themeMode: ThemeMode.system,
+            theme: const CupertinoThemeData(
+              primaryColor: Color(0xFF0066CC),
+            ),
+            localizationsDelegates: const [
+              DefaultMaterialLocalizations.delegate,
+              DefaultCupertinoLocalizations.delegate,
+              DefaultWidgetsLocalizations.delegate,
+            ],
             initialRoute: initialRoute,
             onGenerateRoute: AppRouter.onGenerateRoute,
+            builder: (context, child) {
+              final brightness = MediaQuery.platformBrightnessOf(context);
+              final materialTheme = brightness == Brightness.dark
+                  ? AppTheme.dark
+                  : AppTheme.light;
+              return Theme(
+                data: materialTheme,
+                child: child ?? const SizedBox.shrink(),
+              );
+            },
           );
         },
       ),

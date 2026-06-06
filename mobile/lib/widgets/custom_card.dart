@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../theme/app_shadows.dart';
+import '../theme/app_colors.dart';
 
 /// Reusable quiet utility surface.
 class CustomCard extends StatelessWidget {
@@ -24,8 +26,8 @@ class CustomCard extends StatelessWidget {
     Widget card = Container(
       decoration: BoxDecoration(
         color: theme.cardTheme.color,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: theme.dividerColor),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: AppColors.dividerSoft),
         boxShadow: shadows,
       ),
       clipBehavior: Clip.antiAlias,
@@ -41,7 +43,7 @@ class CustomCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: accentColor,
               borderRadius: const BorderRadius.horizontal(
-                left: Radius.circular(18),
+                left: Radius.circular(22),
               ),
             ),
           ),
@@ -51,14 +53,12 @@ class CustomCard extends StatelessWidget {
     }
 
     if (onTap != null) {
-      card = Material(
-        color: Colors.transparent,
-        clipBehavior: Clip.antiAlias,
-        borderRadius: BorderRadius.circular(18),
-        child: InkWell(
-          onTap: onTap,
-          child: card,
-        ),
+      card = CupertinoButton(
+        onPressed: onTap,
+        padding: EdgeInsets.zero,
+        minimumSize: const Size(44, 44),
+        borderRadius: BorderRadius.circular(22),
+        child: card,
       );
     }
 

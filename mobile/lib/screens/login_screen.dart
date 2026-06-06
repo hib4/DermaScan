@@ -10,6 +10,7 @@ import '../widgets/disclaimer_banner.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/secondary_button.dart';
 import '../widgets/text_link.dart';
+import '../widgets/app_toast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -33,9 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final email = _email.text.trim();
     final password = _password.text;
     if (email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields')),
-      );
+      showAppToast(context, 'Please fill in all fields', isError: true);
       return;
     }
     context.read<AuthCubit>().login(email: email, password: password);
@@ -83,9 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
                   if (state is AuthError) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(state.message)),
-                    );
+                    showAppToast(context, state.message, isError: true);
                   } else if (state is AuthAuthenticated) {
                     context.pushReplacement(const ShellRoute());
                   }

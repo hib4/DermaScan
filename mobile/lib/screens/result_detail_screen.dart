@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../core/models/condition_info.dart';
 import '../theme/app_colors.dart';
@@ -16,7 +17,10 @@ class ResultDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text(condition.label)),
+      appBar: CupertinoNavigationBar(
+        middle: Text(condition.label),
+        border: const Border(bottom: BorderSide(color: AppColors.dividerSoft)),
+      ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(24, 16, 24, 34),
         children: [
@@ -29,19 +33,19 @@ class ResultDetailScreen extends StatelessWidget {
           HealthInfoCard(
             title: 'Visual characteristics',
             body: condition.characteristics.join('\n'),
-            icon: Icons.visibility_outlined,
+            icon: CupertinoIcons.eye,
           ),
           const SizedBox(height: 12),
           HealthInfoCard(
             title: 'Common risk factors',
             body: condition.riskFactors.join('\n'),
-            icon: Icons.fact_check_outlined,
+            icon: CupertinoIcons.list_bullet,
           ),
           const SizedBox(height: 12),
           HealthInfoCard(
             title: 'When to seek professional help',
             body: condition.seekHelp,
-            icon: Icons.medical_services_outlined,
+            icon: CupertinoIcons.heart,
           ),
         ],
       ),

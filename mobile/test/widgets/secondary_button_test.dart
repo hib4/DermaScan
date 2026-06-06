@@ -1,4 +1,5 @@
 import 'package:dermascan/widgets/secondary_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -34,6 +35,6 @@ void main() {
       ),
     );
 
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.byType(CupertinoActivityIndicator), findsOneWidget);
   });
 }

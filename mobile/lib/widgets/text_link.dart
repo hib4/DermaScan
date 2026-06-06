@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import '../theme/app_colors.dart';
+import '../theme/app_text_styles.dart';
 
 class TextLink extends StatelessWidget {
   const TextLink({
@@ -14,17 +16,19 @@ class TextLink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = onDark
-        ? const Color(0xFF2997FF)
-        : Theme.of(context).colorScheme.primary;
-    return TextButton(
+    final color = onDark ? AppColors.primaryOnDark : AppColors.primary;
+    return CupertinoButton(
       onPressed: onPressed,
-      style: TextButton.styleFrom(
-        foregroundColor: color,
-        minimumSize: const Size(44, 44),
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+      minimumSize: const Size(44, 44),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Text(
+        text,
+        style: AppTextStyles.body.copyWith(
+          color: onPressed == null
+              ? color.withValues(alpha: 0.45)
+              : color,
+        ),
       ),
-      child: Text(text),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 
@@ -39,15 +40,7 @@ class _AnalysisLoadingStateState extends State<AnalysisLoadingState> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(
-              width: 52,
-              height: 52,
-              child: CircularProgressIndicator(
-                strokeWidth: 3,
-                color: theme.colorScheme.primary,
-                backgroundColor: AppColors.dividerSoft,
-              ),
-            ),
+            const CupertinoActivityIndicator(radius: 18, color: AppColors.primary),
             const SizedBox(height: 28),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 260),

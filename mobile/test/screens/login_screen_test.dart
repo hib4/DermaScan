@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,7 +40,7 @@ void main() {
     testWidgets('shows email and password fields', (tester) async {
       await tester.pumpWidget(build());
       expect(find.text('Sign in'), findsOneWidget);
-      expect(find.byType(TextFormField), findsNWidgets(2));
+      expect(find.byType(CupertinoTextField), findsNWidgets(2));
     });
 
     testWidgets('shows error when fields are empty', (tester) async {
@@ -47,6 +48,7 @@ void main() {
       await tester.tap(find.text('Sign In'));
       await tester.pump();
       expect(find.text('Please fill in all fields'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 3));
     });
   });
 }

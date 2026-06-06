@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../core/extensions/navigator_extensions.dart';
@@ -11,6 +12,7 @@ import '../../core/services/camera_service.dart';
 import '../../widgets/quality_warning_card.dart';
 import '../../widgets/primary_button.dart';
 import '../../widgets/secondary_button.dart';
+import '../../widgets/app_toast.dart';
 
 /// Camera screen with preview, frame guide, capture, and gallery upload.
 class CameraScreen extends StatefulWidget {
@@ -99,9 +101,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
       await _continueWithImage(xFile.path);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to capture: $e')),
-        );
+        showAppToast(context, 'Failed to capture: $e', isError: true);
       }
     } finally {
       if (mounted) {
@@ -118,9 +118,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
       await _continueWithImage(image.path);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to pick image: $e')),
-        );
+        showAppToast(context, 'Failed to pick image: $e', isError: true);
       }
     }
   }
@@ -180,7 +178,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const CircularProgressIndicator(),
+              const CupertinoActivityIndicator(color: AppColors.primary),
               const SizedBox(height: 16),
               Text(
                 'Initializing camera...',
@@ -216,9 +214,11 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      icon: const Icon(Icons.close, color: Colors.white),
+                    CupertinoButton(
+                      minimumSize: const Size(44, 44),
+                      padding: EdgeInsets.zero,
                       onPressed: () => context.pop(),
+                      child: const Icon(CupertinoIcons.xmark, color: Colors.white),
                     ),
                     if (_qualityWarning != null)
                       Container(
@@ -234,7 +234,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             const Icon(
-                              Icons.info_outline,
+                              CupertinoIcons.info_circle,
                               color: AppColors.accentOrange,
                               size: 16,
                             ),
@@ -283,8 +283,11 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     // Gallery button
-                    GestureDetector(
-                      onTap: _pickFromGallery,
+                    CupertinoButton(
+                      onPressed: _pickFromGallery,
+                      padding: EdgeInsets.zero,
+                      minimumSize: const Size(48, 48),
+                      borderRadius: BorderRadius.circular(999),
                       child: Container(
                         width: 48,
                         height: 48,
@@ -297,7 +300,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                           ),
                         ),
                         child: const Icon(
-                          Icons.photo_library_outlined,
+                          CupertinoIcons.photo_on_rectangle,
                           color: Colors.white,
                           size: 24,
                         ),
@@ -337,7 +340,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
-                  Icons.camera_alt_outlined,
+                  CupertinoIcons.camera,
                   size: 64,
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
                 ),

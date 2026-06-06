@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../core/cubit/scan_history_cubit.dart';
@@ -7,6 +8,7 @@ import '../core/extensions/navigator_extensions.dart';
 import '../theme/app_colors.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/history_item.dart';
+import '../widgets/secondary_button.dart';
 import 'results_screen.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -30,14 +32,18 @@ class _HistoryScreenState extends State<HistoryScreen> {
         child: BlocBuilder<ScanHistoryCubit, ScanHistoryState>(
           builder: (context, state) {
             if (state is ScanHistoryLoading || state is ScanHistoryInitial) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                child: CupertinoActivityIndicator(color: AppColors.primary),
+              );
             }
             if (state is ScanHistoryError) return _buildErrorState(state.message);
             if (state is ScanHistoryLoaded) {
               if (state.scans.isEmpty) return _buildEmptyState();
               return _buildScanList(state.scans);
             }
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CupertinoActivityIndicator(color: AppColors.primary),
+            );
           },
         ),
       ),
@@ -74,7 +80,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   Widget _buildEmptyState() {
     return EmptyState(
-      icon: Icons.history_outlined,
+      icon: CupertinoIcons.clock,
       title: 'No scans yet',
       message: 'Your saved screening history will appear here after your first scan.',
       actionLabel: 'Refresh',
@@ -88,7 +94,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.error_outline, size: 48, color: AppColors.accentRed),
+          const Icon(CupertinoIcons.exclamationmark_circle, size: 48, color: AppColors.accentRed),
           const SizedBox(height: 16),
           Text(
             'Failed to load history',
@@ -101,9 +107,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
-          OutlinedButton(
+          SecondaryButton(
+            text: 'Retry',
             onPressed: () => context.read<ScanHistoryCubit>().loadHistory(),
-            child: const Text('Retry'),
           ),
         ],
       ),

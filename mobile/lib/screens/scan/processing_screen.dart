@@ -5,6 +5,7 @@ import '../../routes/app_router.dart';
 import '../results_screen.dart';
 import '../../core/cubit/scan_cubit.dart';
 import '../../widgets/analysis_loading_state.dart';
+import '../../widgets/app_toast.dart';
 
 /// Loading screen that runs the full TFLite inference pipeline.
 class ProcessingScreen extends StatefulWidget {
@@ -37,12 +38,7 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
       context.push(const ResultsScreen());
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Analysis failed: $e'),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
-      );
+      showAppToast(context, 'Analysis failed: $e', isError: true);
       context.pop();
     }
   }

@@ -1,4 +1,5 @@
 import 'package:dermascan/widgets/primary_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -34,7 +35,7 @@ void main() {
       ),
     );
 
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.byType(CupertinoActivityIndicator), findsOneWidget);
     expect(find.text('Loading'), findsNothing);
   });
 
@@ -50,7 +51,7 @@ void main() {
       ),
     );
 
-    final widget = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+    final widget = tester.widget<CupertinoButton>(find.byType(CupertinoButton));
     expect(widget.onPressed, isNull);
   });
 }

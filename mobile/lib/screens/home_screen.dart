@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../core/extensions/navigator_extensions.dart';
@@ -64,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.center_focus_strong, color: theme.colorScheme.primary, size: 34),
+                    const Icon(CupertinoIcons.viewfinder, color: AppColors.primary, size: 34),
                     const SizedBox(height: 22),
                     Text('Scan Skin', style: theme.textTheme.titleMedium),
                     const SizedBox(height: 8),
@@ -100,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }
                   return HealthInfoCard(
-                    icon: Icons.lightbulb_outline,
+                    icon: CupertinoIcons.lightbulb,
                     title: 'Skin health tip',
                     body: ConditionLibrary.scanTips.first,
                   );

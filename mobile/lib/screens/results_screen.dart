@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../core/extensions/navigator_extensions.dart';
@@ -15,6 +16,7 @@ import '../widgets/image_preview_card.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/result_card.dart';
 import '../widgets/secondary_button.dart';
+import '../widgets/app_toast.dart';
 import 'result_detail_screen.dart';
 
 class ResultsScreen extends StatelessWidget {
@@ -29,12 +31,15 @@ class ResultsScreen extends StatelessWidget {
 
     if (viewModel == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Results')),
+        appBar: const CupertinoNavigationBar(
+          middle: Text('Results'),
+          border: Border(bottom: BorderSide(color: AppColors.dividerSoft)),
+        ),
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.error_outline, size: 48, color: AppColors.mute),
+              const Icon(CupertinoIcons.exclamationmark_circle, size: 48, color: AppColors.mute),
               const SizedBox(height: 16),
               Text(
                 'No screening result available',
@@ -43,10 +48,9 @@ class ResultsScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              TextButton.icon(
-              onPressed: () => context.pushReplacement(const CameraScreen()),
-                icon: const Icon(Icons.camera_alt),
-                label: const Text('Try Again'),
+              SecondaryButton(
+                text: 'Try Again',
+                onPressed: () => context.pushReplacement(const CameraScreen()),
               ),
             ],
           ),
@@ -56,7 +60,10 @@ class ResultsScreen extends StatelessWidget {
 
     final condition = ConditionLibrary.forLabel(viewModel.label);
     return Scaffold(
-      appBar: AppBar(title: const Text('Result')),
+      appBar: const CupertinoNavigationBar(
+        middle: Text('Result'),
+        border: Border(bottom: BorderSide(color: AppColors.dividerSoft)),
+      ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(24, 16, 24, 34),
         children: [
@@ -69,14 +76,14 @@ class ResultsScreen extends StatelessWidget {
           HealthInfoCard(
             title: 'Recommended next steps',
             body: condition.seekHelp,
-            icon: Icons.medical_services_outlined,
+            icon: CupertinoIcons.heart,
           ),
           const SizedBox(height: 12),
           HealthInfoCard(
             title: 'What DermaScan checked',
             body:
                 'The app compared visual patterns in the image against supported screening categories. Clinical context, symptoms, and examination are not included.',
-            icon: Icons.auto_awesome_outlined,
+            icon: CupertinoIcons.sparkles,
           ),
           const SizedBox(height: 24),
           PrimaryButton(
@@ -90,10 +97,9 @@ class ResultsScreen extends StatelessWidget {
             text: 'Save Result',
             onPressed: () {
               context.read<ScanHistoryCubit>().loadHistory();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Result sync is saved to history when online.'),
-                ),
+              showAppToast(
+                context,
+                'Result sync is saved to history when online.',
               );
             },
           ),

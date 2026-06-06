@@ -25,9 +25,8 @@ class ResultCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: theme.dividerColor),
+        color: AppColors.surfacePearl,
+        borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,8 +62,9 @@ class ResultCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: condition.riskLevel == RiskLevel.high
                   ? AppColors.accentRed.withValues(alpha: 0.08)
-                  : AppColors.canvasParchment,
-              borderRadius: BorderRadius.circular(18),
+                  : AppColors.canvas,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: AppColors.dividerSoft),
             ),
             child: Text(
               condition.riskLevel.nextStep,
@@ -94,8 +94,9 @@ class _Metric extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.canvasParchment,
+        color: AppColors.canvas,
         borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AppColors.dividerSoft),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

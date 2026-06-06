@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../screens/history_screen.dart';
 import '../screens/home_screen.dart';
@@ -31,42 +32,50 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
           SettingsScreen(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) => setState(() => _currentIndex = index),
-        selectedLabelStyle: Theme.of(context).textTheme.labelSmall,
-        unselectedLabelStyle: Theme.of(context).textTheme.labelSmall,
-        showUnselectedLabels: true,
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        selectedItemColor: Theme.of(context).colorScheme.primary,
-        unselectedItemColor: AppColors.mute,
-        items: const [
+      bottomNavigationBar: DecoratedBox(
+        decoration: BoxDecoration(
+          color: AppColors.canvas.withValues(alpha: 0.96),
+          border: const Border(top: BorderSide(color: AppColors.dividerSoft)),
+        ),
+        child: SafeArea(
+          top: false,
+          child: CupertinoTabBar(
+            currentIndex: _currentIndex,
+            onTap: (index) => setState(() => _currentIndex = index),
+            backgroundColor: Colors.transparent,
+            activeColor: AppColors.primary,
+            inactiveColor: AppColors.mute,
+            border: null,
+            iconSize: 23,
+            items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home_rounded),
+            icon: Icon(CupertinoIcons.house),
+            activeIcon: Icon(CupertinoIcons.house_fill),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.camera_alt_outlined),
-            activeIcon: Icon(Icons.camera_alt_rounded),
+            icon: Icon(CupertinoIcons.camera),
+            activeIcon: Icon(CupertinoIcons.camera_fill),
             label: 'Scan',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.history_outlined),
-            activeIcon: Icon(Icons.history_rounded),
+            icon: Icon(CupertinoIcons.clock),
+            activeIcon: Icon(CupertinoIcons.clock_fill),
             label: 'History',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book_outlined),
-            activeIcon: Icon(Icons.menu_book_rounded),
+            icon: Icon(CupertinoIcons.book),
+            activeIcon: Icon(CupertinoIcons.book_fill),
             label: 'Learn',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person_rounded),
+            icon: Icon(CupertinoIcons.person),
+            activeIcon: Icon(CupertinoIcons.person_fill),
             label: 'Profile',
           ),
-        ],
+            ],
+          ),
+        ),
       ),
     );
   }

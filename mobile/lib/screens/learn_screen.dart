@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../core/extensions/navigator_extensions.dart';
 import '../core/models/condition_info.dart';
@@ -34,16 +35,17 @@ class _LearnScreenState extends State<LearnScreen> {
               style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.mute),
             ),
             const SizedBox(height: 24),
-            TextField(
+            CupertinoSearchTextField(
               onChanged: (value) => setState(() => _query = value),
-              decoration: const InputDecoration(
-                hintText: 'Search conditions',
-                prefixIcon: Icon(Icons.search),
-              ),
+              placeholder: 'Search conditions',
+              backgroundColor: AppColors.surfacePearl,
+              borderRadius: BorderRadius.circular(999),
+              itemColor: AppColors.mute,
+              style: theme.textTheme.bodyMedium,
             ),
             const SizedBox(height: 24),
             HealthInfoCard(
-              icon: Icons.wb_sunny_outlined,
+              icon: CupertinoIcons.sun_max,
               title: 'Clear photo checklist',
               body: ConditionLibrary.scanTips.join(' '),
             ),

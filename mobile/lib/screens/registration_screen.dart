@@ -9,6 +9,7 @@ import '../widgets/custom_text_field.dart';
 import '../widgets/disclaimer_banner.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/secondary_button.dart';
+import '../widgets/app_toast.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -46,7 +47,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   void _onRegister() {
     final err = _validate();
     if (err != null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(err)));
+      showAppToast(context, err, isError: true);
       return;
     }
     context.read<AuthCubit>().register(
@@ -103,9 +104,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
                   if (state is AuthError) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(state.message)),
-                    );
+                    showAppToast(context, state.message, isError: true);
                   } else if (state is AuthAuthenticated) {
                     context.pushReplacement(const ShellRoute());
                   }
