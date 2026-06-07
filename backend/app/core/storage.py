@@ -1,9 +1,11 @@
+import os
 import uuid
 from pathlib import Path
 
 import aiofiles
 
-UPLOAD_DIR = Path("uploads")
+# Use /tmp on serverless (Vercel), local directory otherwise
+UPLOAD_DIR = Path("/tmp/uploads") if os.environ.get("VERCEL") else Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".heic"}

@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -27,7 +28,8 @@ app.include_router(auth_router)
 app.include_router(scans_router)
 
 # Serve uploaded images at /uploads/<filename>
-uploads_dir = Path("uploads")
+# Use /tmp on serverless (Vercel), local directory otherwise
+uploads_dir = Path("/tmp/uploads") if os.environ.get("VERCEL") else Path("uploads")
 uploads_dir.mkdir(exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=str(uploads_dir)), name="uploads")
 
