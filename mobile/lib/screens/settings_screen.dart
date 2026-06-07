@@ -16,8 +16,9 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+        bottom: false,
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(24, 26, 24, 34),
+          padding: const EdgeInsets.fromLTRB(24, 26, 24, 110),
           children: [
             Text('Profile', style: Theme.of(context).textTheme.headlineMedium),
             const SizedBox(height: 12),

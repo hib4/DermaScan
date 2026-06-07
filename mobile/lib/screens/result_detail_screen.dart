@@ -16,13 +16,14 @@ class ResultDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final bottomPadding = MediaQuery.paddingOf(context).bottom;
     return Scaffold(
       appBar: CupertinoNavigationBar(
         middle: Text(condition.label),
         border: const Border(bottom: BorderSide(color: AppColors.dividerSoft)),
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(24, 16, 24, 34),
+        padding: EdgeInsets.fromLTRB(24, 16, 24, 34 + bottomPadding),
         children: [
           Text(condition.label, style: theme.textTheme.headlineMedium),
           const SizedBox(height: 10),

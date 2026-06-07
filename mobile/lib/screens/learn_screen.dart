@@ -25,8 +25,9 @@ class _LearnScreenState extends State<LearnScreen> {
 
     return Scaffold(
       body: SafeArea(
+        bottom: false,
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(24, 26, 24, 34),
+          padding: const EdgeInsets.fromLTRB(24, 26, 24, 110),
           children: [
             Text('Learn', style: theme.textTheme.headlineMedium),
             const SizedBox(height: 12),

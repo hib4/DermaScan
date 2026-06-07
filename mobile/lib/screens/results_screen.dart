@@ -59,13 +59,14 @@ class ResultsScreen extends StatelessWidget {
     }
 
     final condition = ConditionLibrary.forLabel(viewModel.label);
+    final bottomPadding = MediaQuery.paddingOf(context).bottom;
     return Scaffold(
       appBar: const CupertinoNavigationBar(
         middle: Text('Result'),
         border: Border(bottom: BorderSide(color: AppColors.dividerSoft)),
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(24, 16, 24, 34),
+        padding: EdgeInsets.fromLTRB(24, 16, 24, 34 + bottomPadding),
         children: [
           ImagePreviewCard(imagePath: viewModel.imagePath),
           const SizedBox(height: 18),

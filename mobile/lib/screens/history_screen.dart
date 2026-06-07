@@ -29,6 +29,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+        bottom: false,
         child: BlocBuilder<ScanHistoryCubit, ScanHistoryState>(
           builder: (context, state) {
             if (state is ScanHistoryLoading || state is ScanHistoryInitial) {
@@ -55,7 +56,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return RefreshIndicator(
       onRefresh: () => context.read<ScanHistoryCubit>().loadHistory(),
       child: ListView(
-        padding: const EdgeInsets.fromLTRB(24, 26, 24, 34),
+        padding: const EdgeInsets.fromLTRB(24, 26, 24, 110),
         children: [
           Text('History', style: theme.textTheme.headlineMedium),
           const SizedBox(height: 10),

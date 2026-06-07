@@ -16,8 +16,9 @@ class ScanEntryScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
+        bottom: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(24, 26, 24, 34),
+          padding: const EdgeInsets.fromLTRB(24, 26, 24, 110),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
