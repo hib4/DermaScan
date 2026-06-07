@@ -43,131 +43,66 @@ class ConditionLibrary {
   ];
 
   static const Map<String, ConditionInfo> _items = {
-    'Melanoma': ConditionInfo(
-      label: 'Melanoma',
+    'Malignant': ConditionInfo(
+      label: 'Malignant',
       riskLevel: RiskLevel.high,
       overview:
-          'Melanoma is a serious skin cancer that can resemble changing or irregular pigmented lesions.',
+          'The model suggests a possible visual match with a malignant skin lesion, such as melanoma or basal cell carcinoma. These conditions require professional medical evaluation.',
       characteristics: [
         'Asymmetry or uneven shape',
-        'Irregular border',
+        'Irregular or poorly defined border',
         'Multiple colors or recent visual change',
+        'Pearly bump, shiny lesion, or sore that does not heal',
       ],
       riskFactors: [
-        'History of intense UV exposure',
-        'Family history of melanoma',
+        'History of intense UV exposure or sunburns',
+        'Family or personal history of skin cancer',
         'Many or atypical moles',
-      ],
-      seekHelp:
-          'Please consult a certified dermatologist for proper evaluation, especially if the spot is changing, bleeding, or new.',
-    ),
-    'Melanocytic Nevus': ConditionInfo(
-      label: 'Melanocytic Nevus',
-      riskLevel: RiskLevel.routine,
-      overview:
-          'A melanocytic nevus is commonly called a mole. Many are harmless, but changes should be monitored.',
-      characteristics: [
-        'Often round or oval',
-        'Usually even in color',
-        'Can be flat or raised',
-      ],
-      riskFactors: [
-        'Sun exposure',
-        'Genetics',
-        'Large number of moles',
-      ],
-      seekHelp:
-          'Seek professional advice if it changes in size, shape, color, or begins to itch, bleed, or hurt.',
-    ),
-    'Basal Cell Carcinoma': ConditionInfo(
-      label: 'Basal Cell Carcinoma',
-      riskLevel: RiskLevel.elevated,
-      overview:
-          'Basal cell carcinoma is a common skin cancer that often develops on sun-exposed skin.',
-      characteristics: [
-        'Pearly or shiny bump',
-        'Pink or reddish patch',
-        'Sore that heals and returns',
-      ],
-      riskFactors: [
-        'Long-term sun exposure',
-        'Fair skin',
-        'Older age or prior skin cancer',
-      ],
-      seekHelp:
-          'A certified dermatologist can evaluate the area and discuss appropriate care.',
-    ),
-    'Actinic Keratosis': ConditionInfo(
-      label: 'Actinic Keratosis',
-      riskLevel: RiskLevel.elevated,
-      overview:
-          'Actinic keratosis is a rough, sun-damaged area that can sometimes progress if untreated.',
-      characteristics: [
-        'Rough or scaly texture',
-        'Pink, red, or tan patch',
-        'Often feels dry or sandpaper-like',
-      ],
-      riskFactors: [
-        'Frequent UV exposure',
-        'Outdoor work or activities',
         'Fair skin or immune suppression',
       ],
       seekHelp:
-          'Professional evaluation is recommended, particularly for persistent or growing patches.',
+          'Please consult a certified dermatologist for proper evaluation as soon as possible, especially if the lesion is changing, bleeding, or new.',
     ),
-    'Benign Keratosis': ConditionInfo(
-      label: 'Benign Keratosis',
-      riskLevel: RiskLevel.routine,
+    'Pre-malignant': ConditionInfo(
+      label: 'Pre-malignant',
+      riskLevel: RiskLevel.elevated,
       overview:
-          'Benign keratoses are non-cancerous growths that can vary in color and texture.',
+          'The model suggests a possible visual match with a pre-malignant skin lesion, such as actinic keratosis. These areas can sometimes progress if left untreated.',
       characteristics: [
-        'Waxy, scaly, or stuck-on appearance',
-        'Tan, brown, or dark color',
-        'May be slightly raised',
+        'Rough, scaly, or sandpaper-like texture',
+        'Pink, red, or tan patch',
+        'Often found on sun-exposed areas (face, ears, hands)',
+        'May feel dry or crusty',
       ],
       riskFactors: [
-        'Age',
-        'Genetics',
+        'Frequent or prolonged UV exposure',
+        'Outdoor work or recreational sun exposure',
+        'Fair skin or history of sunburns',
+        'Older age',
+      ],
+      seekHelp:
+          'Professional evaluation is recommended, particularly for persistent, growing, or symptomatic patches.',
+    ),
+    'Benign & Common': ConditionInfo(
+      label: 'Benign & Common',
+      riskLevel: RiskLevel.routine,
+      overview:
+          'The model suggests a possible visual match with a benign skin growth or lesion, such as a mole, dermatofibroma, or benign keratosis. Most are harmless, but changes should be monitored.',
+      characteristics: [
+        'Often round or oval with even borders',
+        'Usually uniform in color',
+        'May be flat or slightly raised',
+        'Can appear waxy, scaly, or stuck-on (keratosis)',
+        'May dimple when pinched (dermatofibroma)',
+      ],
+      riskFactors: [
         'Sun exposure',
+        'Genetics and family history',
+        'Age-related skin changes',
+        'Minor skin trauma or insect bites',
       ],
       seekHelp:
-          'Consult a clinician if the lesion changes quickly, bleeds, or becomes painful.',
-    ),
-    'Dermatofibroma': ConditionInfo(
-      label: 'Dermatofibroma',
-      riskLevel: RiskLevel.routine,
-      overview:
-          'Dermatofibromas are usually firm, benign skin bumps that can appear after minor skin injury.',
-      characteristics: [
-        'Firm small bump',
-        'Often brown, pink, or reddish',
-        'May dimple when pinched',
-      ],
-      riskFactors: [
-        'Minor skin trauma',
-        'Insect bites',
-        'More common in adults',
-      ],
-      seekHelp:
-          'Seek professional care if it grows, bleeds, or looks different from nearby skin spots.',
-    ),
-    'Vascular Lesion': ConditionInfo(
-      label: 'Vascular Lesion',
-      riskLevel: RiskLevel.routine,
-      overview:
-          'Vascular lesions involve visible blood vessels and are often benign, though appearance can vary.',
-      characteristics: [
-        'Red, purple, or blue tone',
-        'May blanch under pressure',
-        'Can be flat or raised',
-      ],
-      riskFactors: [
-        'Age',
-        'Genetics',
-        'Skin injury or sun exposure',
-      ],
-      seekHelp:
-          'Consult a dermatologist if it changes, bleeds, or appears suddenly with other symptoms.',
+          'Seek professional advice if the lesion changes in size, shape, or color, or if it begins to itch, bleed, or become painful.',
     ),
   };
 

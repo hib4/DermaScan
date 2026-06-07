@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('ConditionLibrary', () {
-    test('maps Melanoma to high risk next step', () {
-      final info = ConditionLibrary.forLabel('Melanoma');
+    test('maps Malignant to high risk next step', () {
+      final info = ConditionLibrary.forLabel('Malignant');
 
       expect(info.riskLevel, RiskLevel.high);
       expect(

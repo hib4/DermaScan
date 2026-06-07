@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/extensions/navigator_extensions.dart';
+import '../../core/utils/app_logger.dart';
 import '../../routes/app_router.dart';
 import '../results_screen.dart';
 import '../../core/cubit/scan_cubit.dart';
@@ -18,6 +19,8 @@ class ProcessingScreen extends StatefulWidget {
 }
 
 class _ProcessingScreenState extends State<ProcessingScreen> {
+  final _logger = AppLogger.scan;
+
   @override
   void initState() {
     super.initState();
@@ -26,18 +29,23 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
 
   Future<void> _runInference() async {
     if (widget.imagePath == null) {
+      _logger.w('ProcessingScreen opened without image path, redirecting to home');
       if (mounted) context.pushReplacement(const ShellRoute());
       return;
     }
+
+    _logger.i('ProcessingScreen: running inference for ${widget.imagePath!.split('/').last}');
 
     try {
       final cubit = context.read<ScanCubit>();
       await cubit.runInference(widget.imagePath!);
 
       if (!mounted) return;
+      _logger.i('ProcessingScreen: inference complete, navigating to results');
       context.push(const ResultsScreen());
-    } catch (e) {
+    } catch (e, st) {
       if (!mounted) return;
+      _logger.e('ProcessingScreen: inference threw exception', error: e, stackTrace: st);
       showAppToast(context, 'Analysis failed: $e', isError: true);
       context.pop();
     }

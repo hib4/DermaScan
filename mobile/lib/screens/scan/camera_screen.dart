@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../core/extensions/navigator_extensions.dart';
+import '../../core/utils/app_logger.dart';
 import '../../core/utils/image_quality_evaluator.dart';
 import '../../theme/app_colors.dart';
 import 'processing_screen.dart';
@@ -25,6 +26,7 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver {
   final _cameraService = CameraService.instance;
   final _picker = ImagePicker();
+  final _logger = AppLogger.scan;
 
   bool _isInitializing = true;
   bool _isCapturing = false;
@@ -43,6 +45,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
 
   @override
   void dispose() {
+    _logger.d('CameraScreen disposed');
     WidgetsBinding.instance.removeObserver(this);
     _qualityCheckTimer?.cancel();
     _cameraService.dispose();
@@ -53,15 +56,20 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (!_cameraService.isInitialized) return;
     if (state == AppLifecycleState.inactive) {
+      _logger.d('App inactive — disposing camera');
       _cameraService.dispose();
     } else if (state == AppLifecycleState.resumed) {
+      _logger.d('App resumed — reinitializing camera');
       _initializeCamera();
     }
   }
 
   Future<void> _initializeCamera() async {
     try {
+      _logger.d('Initializing camera…');
+      final sw = Stopwatch()..start();
       await _cameraService.initializeCamera();
+      _logger.d('Camera initialized in ${sw.elapsedMilliseconds}ms');
       if (mounted) {
         setState(() {
           _isInitializing = false;
@@ -69,7 +77,8 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
         });
         _startQualityChecks();
       }
-    } catch (e) {
+    } catch (e, st) {
+      _logger.e('Camera initialization failed', error: e, stackTrace: st);
       if (mounted) {
         setState(() {
           _isInitializing = false;
@@ -95,11 +104,14 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
     setState(() => _isCapturing = true);
 
     try {
+      _logger.d('Capturing photo');
       final xFile = await _cameraService.capturePicture();
       if (!mounted) return;
+      _logger.d('Photo captured: ${xFile.path.split('/').last}');
 
       await _continueWithImage(xFile.path);
-    } catch (e) {
+    } catch (e, st) {
+      _logger.e('Photo capture failed', error: e, stackTrace: st);
       if (mounted) {
         showAppToast(context, 'Failed to capture: $e', isError: true);
       }
@@ -112,11 +124,17 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
 
   Future<void> _pickFromGallery() async {
     try {
+      _logger.d('Opening gallery picker');
       final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-      if (image == null || !mounted) return;
+      if (image == null || !mounted) {
+        _logger.d('Gallery picker cancelled or returned null');
+        return;
+      }
+      _logger.d('Gallery image picked: ${image.path.split('/').last}');
 
       await _continueWithImage(image.path);
-    } catch (e) {
+    } catch (e, st) {
+      _logger.e('Gallery pick failed', error: e, stackTrace: st);
       if (mounted) {
         showAppToast(context, 'Failed to pick image: $e', isError: true);
       }
@@ -124,14 +142,20 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
   }
 
   Future<void> _continueWithImage(String imagePath) async {
+    _logger.d('Evaluating image quality: ${imagePath.split('/').last}');
+    final sw = Stopwatch()..start();
     final quality = await ImageQualityEvaluator.evaluate(File(imagePath));
+    _logger.d('Quality evaluation done in ${sw.elapsedMilliseconds}ms — acceptable: ${quality.isAcceptable}');
+
     if (!mounted) return;
 
     if (quality.isAcceptable) {
+      _logger.i('Image quality OK, navigating to processing');
       context.push(ProcessingScreen(imagePath: imagePath));
       return;
     }
 
+    _logger.w('Image quality low: ${quality.message}');
     setState(() => _qualityWarning = quality.message);
     final proceed = await showModalBottomSheet<bool>(
       context: context,
@@ -166,7 +190,10 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
     );
 
     if (proceed == true && mounted) {
+      _logger.i('User chose to proceed with low-quality image');
       context.push(ProcessingScreen(imagePath: imagePath));
+    } else {
+      _logger.d('User chose to retake photo');
     }
   }
 
