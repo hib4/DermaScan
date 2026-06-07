@@ -7,7 +7,12 @@ services:
       - .:/app
       - uploads_data:/app/uploads
     environment:
-      - DATABASE_URL=postgresql+asyncpg://${POSTGRES_USER:-dermascan}:${POSTGRES_PASSWORD:-dermascan}@db:5432/${POSTGRES_DB:-dermascan}
+      - PGHOST=db
+      - PGDATABASE=${POSTGRES_DB:-dermascan}
+      - PGUSER=${POSTGRES_USER:-dermascan}
+      - PGPASSWORD=${POSTGRES_PASSWORD:-dermascan}
+      - PGSSLMODE=disable
+      - PGCHANNELBINDING=disable
       - APP_NAME=DermaScan API
       - DEBUG=${DEBUG:-true}
       - ALLOWED_ORIGINS=["*"]
