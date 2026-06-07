@@ -92,7 +92,7 @@ class ApiClient {
   dynamic _handleResponse(String path, http.Response response) {
     final isSuccess = response.statusCode >= 200 && response.statusCode < 300;
     if (isSuccess) {
-      print('[API] ${response.statusCode} $path');
+      print('[API] ${response.statusCode} $path  body=${response.body}');
     } else {
       print('[API] ERROR ${response.statusCode} $path  body=${response.body}');
     }

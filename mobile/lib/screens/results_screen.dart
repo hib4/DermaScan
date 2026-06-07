@@ -74,7 +74,7 @@ class ResultsScreen extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.fromLTRB(24, 16, 24, 34 + bottomPadding),
         children: [
-          ImagePreviewCard(imagePath: viewModel.imagePath),
+          ImagePreviewCard(imagePath: viewModel.imagePath, imageData: viewModel.imageData),
           const SizedBox(height: 18),
           ResultCard(condition: condition, confidence: viewModel.confidence),
           const SizedBox(height: 18),
@@ -135,11 +135,13 @@ class ResultsScreen extends StatelessWidget {
 class _ResultViewModel {
   const _ResultViewModel({
     required this.imagePath,
+    this.imageData,
     required this.label,
     required this.confidence,
   });
 
   final String imagePath;
+  final String? imageData;
   final String label;
   final double confidence;
 
@@ -149,7 +151,8 @@ class _ResultViewModel {
   }) {
     if (scan != null) {
       return _ResultViewModel(
-        imagePath: scan.imagePath,
+        imagePath: scan.imagePath ?? '',
+        imageData: scan.imageData,
         label: scan.classification,
         confidence: scan.confidence,
       );

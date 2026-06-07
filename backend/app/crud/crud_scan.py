@@ -10,12 +10,14 @@ from app.models.user import User
 async def create_scan(
     db: AsyncSession,
     user: User,
-    image_path: str,
+    image_data: str,
     classification: str,
     confidence: float,
+    image_path: str | None = None,
 ) -> Scan:
     scan = Scan(
         user_id=user.id,
+        image_data=image_data,
         image_path=image_path,
         classification=classification,
         confidence=confidence,

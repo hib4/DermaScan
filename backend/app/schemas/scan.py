@@ -1,10 +1,7 @@
-import os
 import uuid
 from datetime import datetime
 
 from pydantic import BaseModel, computed_field
-
-from app.core.config import settings
 
 
 class ScanCreate(BaseModel):
@@ -14,7 +11,8 @@ class ScanCreate(BaseModel):
 
 class ScanResponse(BaseModel):
     id: uuid.UUID
-    image_path: str
+    image_path: str | None = None
+    image_data: str
     classification: str
     confidence: float
     created_at: datetime
@@ -23,10 +21,10 @@ class ScanResponse(BaseModel):
 
     @computed_field  # type: ignore[misc]
     @property
-    def image_url(self) -> str:
-        base_url = os.environ.get("BASE_URL", settings.base_url or "")
-        # Strip any local directory prefix, keep just the filename
-        filename = self.image_path.split("/")[-1]
-        if base_url:
-            return f"{base_url.rstrip('/')}/uploads/{filename}"
-        return f"/uploads/{filename}"
+    def image_uri(self) -> str:
+        """Return a data URI from stored base64 image data."""
+        mime = self.image_path or "image/jpeg"
+        # Ensure mime starts with "image/"
+        if not mime.startswith("image/"):
+            mime = f"image/{mime}"
+        return f"data:{mime};base64,{self.image_data}"

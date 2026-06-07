@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_user
 from app.crud.crud_scan import create_scan, get_user_scans
-from app.core.storage import generate_filename, save_upload
+from app.core.storage import encode_to_base64, guess_mime_type
 from app.db.session import get_db
 from app.models.user import User
 from app.schemas.scan import ScanResponse
@@ -25,12 +25,13 @@ async def upload_scan(
             detail="File must be an image",
         )
     file_bytes = await image.read()
-    filename = generate_filename(image.filename or "upload")
-    image_path = await save_upload(file_bytes, filename)
+    image_data = encode_to_base64(file_bytes)
+    mime_type = guess_mime_type(image.filename or "")
     scan = await create_scan(
         db=db,
         user=user,
-        image_path=image_path,
+        image_data=image_data,
+        image_path=mime_type,  # store mime type for data URI construction
         classification=classification,
         confidence=confidence,
     )

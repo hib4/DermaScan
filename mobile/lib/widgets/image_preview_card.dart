@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import '../theme/app_colors.dart';
@@ -6,27 +7,30 @@ class ImagePreviewCard extends StatelessWidget {
   const ImagePreviewCard({
     super.key,
     required this.imagePath,
-    this.imageUrl,
+    this.imageData,
     this.height = 260,
   });
 
   final String imagePath;
-  final String? imageUrl;
+  final String? imageData;
   final double height;
 
   @override
   Widget build(BuildContext context) {
-    final isNetworkImage = imageUrl != null && imageUrl!.startsWith('http');
+    final hasDataUri = imageData != null && imageData!.isNotEmpty;
     final file = File(imagePath);
     final hasLocalImage = imagePath.isNotEmpty && file.existsSync();
 
     Widget? imageWidget;
-    if (isNetworkImage) {
-      imageWidget = Image.network(
-        imageUrl!,
-        fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => _placeholder(),
-      );
+    if (hasDataUri) {
+      // Decode data URI: "data:image/jpeg;base64,..." or raw base64
+      final raw = imageData!.contains(',') ? imageData!.split(',').last : imageData!;
+      try {
+        final bytes = base64Decode(raw);
+        imageWidget = Image.memory(bytes, fit: BoxFit.cover);
+      } catch (e) {
+        // Fall through to placeholder
+      }
     } else if (hasLocalImage) {
       imageWidget = Image.file(file, fit: BoxFit.cover);
     }

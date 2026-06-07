@@ -1,25 +1,13 @@
-import os
-import uuid
-from pathlib import Path
-
-import aiofiles
-
-# Use /tmp on serverless (Vercel), local directory otherwise
-UPLOAD_DIR = Path("/tmp/uploads") if os.environ.get("VERCEL") else Path("uploads")
-UPLOAD_DIR.mkdir(exist_ok=True)
-
-ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".heic"}
+import base64
 
 
-def generate_filename(original_filename: str) -> str:
-    ext = Path(original_filename).suffix.lower()
-    if ext not in ALLOWED_EXTENSIONS:
-        ext = ".jpg"
-    return f"{uuid.uuid4().hex}{ext}"
+def encode_to_base64(file_bytes: bytes) -> str:
+    """Encode image bytes to base64 string for database storage."""
+    return base64.b64encode(file_bytes).decode("utf-8")
 
 
-async def save_upload(file_bytes: bytes, filename: str) -> str:
-    dest = UPLOAD_DIR / filename
-    async with aiofiles.open(dest, "wb") as f:
-        await f.write(file_bytes)
-    return str(dest)
+def guess_mime_type(filename: str) -> str:
+    """Guess MIME type from filename extension."""
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+    mime_map = {"jpg": "jpeg", "jpeg": "jpeg", "png": "png", "webp": "webp", "gif": "gif", "bmp": "bmp", "heic": "heic", "heif": "heic"}
+    return f"image/{mime_map.get(ext, 'jpeg')}"
