@@ -36,7 +36,7 @@ class HistoryItem extends StatelessWidget {
               SizedBox(
                 width: 68,
                 height: 68,
-                child: ImagePreviewCard(imagePath: scan.imagePath, height: 68),
+                child: ImagePreviewCard(imagePath: scan.imagePath, imageUrl: scan.imageUrl, height: 68),
               ),
               const SizedBox(width: 14),
               Expanded(

@@ -42,7 +42,7 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
 
       if (!mounted) return;
       _logger.i('ProcessingScreen: inference complete, navigating to results');
-      context.push(const ResultsScreen());
+      context.pushReplacement(const ResultsScreen());
     } catch (e, st) {
       if (!mounted) return;
       _logger.e('ProcessingScreen: inference threw exception', error: e, stackTrace: st);

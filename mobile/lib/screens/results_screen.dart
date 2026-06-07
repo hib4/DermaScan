@@ -50,7 +50,13 @@ class ResultsScreen extends StatelessWidget {
               const SizedBox(height: 16),
               SecondaryButton(
                 text: 'Try Again',
-                onPressed: () => context.pushReplacement(const CameraScreen()),
+                onPressed: () {
+                  context.read<ScanCubit>().reset();
+                  context.pushAndRemoveUntil(
+                    const CameraScreen(),
+                    (route) => route.settings.name == '/',
+                  );
+                },
               ),
             ],
           ),
@@ -107,7 +113,13 @@ class ResultsScreen extends StatelessWidget {
           const SizedBox(height: 10),
           SecondaryButton(
             text: 'Scan Again',
-            onPressed: () => context.pushReplacement(const CameraScreen()),
+            onPressed: () {
+              context.read<ScanCubit>().reset();
+              context.pushAndRemoveUntil(
+                const CameraScreen(),
+                (route) => route.settings.name == '/',
+              );
+            },
           ),
           const SizedBox(height: 10),
           SecondaryButton(

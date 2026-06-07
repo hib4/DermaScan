@@ -4,12 +4,12 @@ import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../core/extensions/navigator_extensions.dart';
 import '../../core/utils/app_logger.dart';
 import '../../core/utils/image_quality_evaluator.dart';
 import '../../theme/app_colors.dart';
 import 'processing_screen.dart';
-import '../../core/services/camera_service.dart';
 import '../../widgets/quality_warning_card.dart';
 import '../../widgets/primary_button.dart';
 import '../../widgets/secondary_button.dart';
@@ -24,10 +24,10 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver {
-  final _cameraService = CameraService.instance;
   final _picker = ImagePicker();
   final _logger = AppLogger.scan;
 
+  CameraController? _controller;
   bool _isInitializing = true;
   bool _isCapturing = false;
   String? _error;
@@ -35,6 +35,8 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
   String? _qualityWarning;
 
   Timer? _qualityCheckTimer;
+
+  bool get _isCameraReady => _controller != null && _controller!.value.isInitialized;
 
   @override
   void initState() {
@@ -48,16 +50,16 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
     _logger.d('CameraScreen disposed');
     WidgetsBinding.instance.removeObserver(this);
     _qualityCheckTimer?.cancel();
-    _cameraService.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (!_cameraService.isInitialized) return;
     if (state == AppLifecycleState.inactive) {
       _logger.d('App inactive — disposing camera');
-      _cameraService.dispose();
+      _controller?.dispose();
+      _controller = null;
     } else if (state == AppLifecycleState.resumed) {
       _logger.d('App resumed — reinitializing camera');
       _initializeCamera();
@@ -68,7 +70,29 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
     try {
       _logger.d('Initializing camera…');
       final sw = Stopwatch()..start();
-      await _cameraService.initializeCamera();
+
+      final status = await Permission.camera.request();
+      if (!status.isGranted) {
+        throw CameraException('Permission denied', 'Camera permission was not granted');
+      }
+
+      final cameras = await availableCameras();
+      if (cameras.isEmpty) {
+        throw CameraException('No cameras', 'No cameras available on this device');
+      }
+
+      final rearCamera = cameras.firstWhere(
+        (c) => c.lensDirection == CameraLensDirection.back,
+        orElse: () => cameras.first,
+      );
+
+      _controller = CameraController(
+        rearCamera,
+        ResolutionPreset.high,
+        enableAudio: false,
+      );
+
+      await _controller!.initialize();
       _logger.d('Camera initialized in ${sw.elapsedMilliseconds}ms');
       if (mounted) {
         setState(() {
@@ -99,13 +123,13 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
   }
 
   Future<void> _capturePhoto() async {
-    if (_isCapturing || !_cameraService.isInitialized) return;
+    if (_isCapturing || !_isCameraReady) return;
 
     setState(() => _isCapturing = true);
 
     try {
       _logger.d('Capturing photo');
-      final xFile = await _cameraService.capturePicture();
+      final xFile = await _controller!.takePicture();
       if (!mounted) return;
       _logger.d('Photo captured: ${xFile.path.split('/').last}');
 
@@ -226,8 +250,8 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
       body: Stack(
         children: [
           // Camera preview
-          _cameraService.controller != null
-              ? CameraPreview(_cameraService.controller!)
+          _isCameraReady
+              ? CameraPreview(_controller!)
               : const SizedBox.shrink(),
 
           // Top bar with close button

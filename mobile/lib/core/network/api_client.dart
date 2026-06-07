@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import '../services/storage_provider.dart';
 import 'api_config.dart';
 
@@ -55,10 +56,17 @@ class ApiClient {
     final headers = await _headers();
     headers.remove('Content-Type');
 
+    final contentType = _guessContentType(filePath);
     final request = http.MultipartRequest('POST', uri);
     request.headers.addAll(headers);
     request.fields.addAll(fields);
-    request.files.add(await http.MultipartFile.fromPath(fileField, filePath));
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        fileField,
+        filePath,
+        contentType: contentType != null ? MediaType.parse(contentType) : null,
+      ),
+    );
 
     print('[API] POST(MULTIPART) $uri  fields=$fields  file=$filePath');
     final streamed = await _client.send(request);
@@ -112,6 +120,28 @@ class ApiClient {
       return jsonDecode(body);
     } catch (_) {
       return null;
+    }
+  }
+
+  String? _guessContentType(String path) {
+    final ext = path.split('.').last.toLowerCase();
+    switch (ext) {
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'png':
+        return 'image/png';
+      case 'gif':
+        return 'image/gif';
+      case 'webp':
+        return 'image/webp';
+      case 'bmp':
+        return 'image/bmp';
+      case 'heic':
+      case 'heif':
+        return 'image/heic';
+      default:
+        return null;
     }
   }
 
