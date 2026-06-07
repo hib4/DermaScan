@@ -24,53 +24,51 @@ class OnboardingScreen extends StatelessWidget {
               child: CustomPaint(painter: _SkinTexturePainter()),
             ),
           ),
-          SafeArea(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(28, 32, 28, 20 + bottomPadding),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'DermaScan',
-                    style: theme.textTheme.headlineLarge?.copyWith(color: Colors.white),
+          SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(28, 32 + MediaQuery.paddingOf(context).top, 28, 20 + bottomPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'DermaScan',
+                  style: theme.textTheme.headlineLarge?.copyWith(color: Colors.white),
+                ),
+                const SizedBox(height: 14),
+                Text(
+                  'AI-assisted skin screening, designed to be calm, fast, and medically responsible.',
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: Colors.white.withValues(alpha: 0.82),
                   ),
-                  const SizedBox(height: 14),
-                  Text(
-                    'AI-assisted skin screening, designed to be calm, fast, and medically responsible.',
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: Colors.white.withValues(alpha: 0.82),
-                    ),
-                  ),
-                  const SizedBox(height: 34),
-                  _OnboardingPoint(
-                    icon: CupertinoIcons.camera,
-                    title: 'Capture or upload',
-                    body: 'Frame the skin area clearly in bright, even lighting.',
-                  ),
-                  _OnboardingPoint(
-                    icon: CupertinoIcons.sparkles,
-                    title: 'Screen visual patterns',
-                    body: 'The model suggests a possible category with a confidence score.',
-                  ),
-                  _OnboardingPoint(
-                    icon: CupertinoIcons.heart,
-                    title: 'Learn what to do next',
-                    body: 'Read plain-language information and seek care when appropriate.',
-                  ),
-                  const SizedBox(height: 28),
-                  const DisclaimerBanner(onDark: true),
-                  const SizedBox(height: 28),
-                  PrimaryButton(
-                    text: 'Get Started',
-                    onPressed: () => context.pushReplacement(const LoginScreen()),
-                  ),
-                  const SizedBox(height: 10),
-                  SecondaryButton(
-                    text: 'I understand',
-                    onPressed: () => context.pushReplacement(const LoginScreen()),
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 34),
+                _OnboardingPoint(
+                  icon: CupertinoIcons.camera,
+                  title: 'Capture or upload',
+                  body: 'Frame the skin area clearly in bright, even lighting.',
+                ),
+                _OnboardingPoint(
+                  icon: CupertinoIcons.sparkles,
+                  title: 'Screen visual patterns',
+                  body: 'The model suggests a possible category with a confidence score.',
+                ),
+                _OnboardingPoint(
+                  icon: CupertinoIcons.heart,
+                  title: 'Learn what to do next',
+                  body: 'Read plain-language information and seek care when appropriate.',
+                ),
+                const SizedBox(height: 28),
+                const DisclaimerBanner(onDark: true),
+                const SizedBox(height: 28),
+                PrimaryButton(
+                  text: 'Get Started',
+                  onPressed: () => context.pushReplacement(const LoginScreen()),
+                ),
+                const SizedBox(height: 10),
+                SecondaryButton(
+                  text: 'I understand',
+                  onPressed: () => context.pushReplacement(const LoginScreen()),
+                ),
+              ],
             ),
           ),
         ],

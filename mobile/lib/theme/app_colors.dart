@@ -17,6 +17,7 @@ class AppColors {
   static const Color surfaceTile1 = Color(0xFF272729);
   static const Color surfaceTile2 = Color(0xFF2A2A2C);
   static const Color hairline = Color(0xFFE0E0E0);
+  static const Color hairlineSoft = Color(0x14000000); // rgba(0, 0, 0, 0.08)
   static const Color dividerSoft = Color(0xFFF0F0F0);
 
   static const Color ink = Color(0xFF1D1D1F);

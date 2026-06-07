@@ -34,6 +34,7 @@ uploads_dir.mkdir(exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=str(uploads_dir)), name="uploads")
 
 
+@app.get("/")
 @app.get("/api/health")
 async def health():
     if await check_connection():

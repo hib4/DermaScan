@@ -28,25 +28,22 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: BlocBuilder<ScanHistoryCubit, ScanHistoryState>(
-          builder: (context, state) {
-            if (state is ScanHistoryLoading || state is ScanHistoryInitial) {
-              return const Center(
-                child: CupertinoActivityIndicator(color: AppColors.primary),
-              );
-            }
-            if (state is ScanHistoryError) return _buildErrorState(state.message);
-            if (state is ScanHistoryLoaded) {
-              if (state.scans.isEmpty) return _buildEmptyState();
-              return _buildScanList(state.scans);
-            }
+      body: BlocBuilder<ScanHistoryCubit, ScanHistoryState>(
+        builder: (context, state) {
+          if (state is ScanHistoryLoading || state is ScanHistoryInitial) {
             return const Center(
               child: CupertinoActivityIndicator(color: AppColors.primary),
             );
-          },
-        ),
+          }
+          if (state is ScanHistoryError) return _buildErrorState(state.message);
+          if (state is ScanHistoryLoaded) {
+            if (state.scans.isEmpty) return _buildEmptyState();
+            return _buildScanList(state.scans);
+          }
+          return const Center(
+            child: CupertinoActivityIndicator(color: AppColors.primary),
+          );
+        },
       ),
     );
   }
@@ -56,7 +53,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return RefreshIndicator(
       onRefresh: () => context.read<ScanHistoryCubit>().loadHistory(),
       child: ListView(
-        padding: const EdgeInsets.fromLTRB(24, 26, 24, 110),
+        padding: EdgeInsets.fromLTRB(24, 26 + MediaQuery.paddingOf(context).top, 24, 110 + MediaQuery.paddingOf(context).bottom),
         children: [
           Text('History', style: theme.textTheme.headlineMedium),
           const SizedBox(height: 10),

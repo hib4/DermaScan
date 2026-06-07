@@ -32,27 +32,28 @@ class AppTheme {
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
-          fillColor: AppColors.surfacePearl,
-          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          fillColor: AppColors.canvas,
+          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+          constraints: const BoxConstraints(minHeight: 44),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(999),
-            borderSide: const BorderSide(color: AppColors.dividerSoft),
+            borderSide: const BorderSide(color: AppColors.hairlineSoft, width: 1),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(999),
-            borderSide: const BorderSide(color: AppColors.dividerSoft),
+            borderSide: const BorderSide(color: AppColors.hairlineSoft, width: 1),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(999),
-            borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
+            borderSide: const BorderSide(color: AppColors.primaryFocus, width: 2),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(999),
-            borderSide: const BorderSide(color: AppColors.accentRed),
+            borderSide: const BorderSide(color: AppColors.accentRed, width: 1),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(999),
-            borderSide: const BorderSide(color: AppColors.accentRed, width: 1.5),
+            borderSide: const BorderSide(color: AppColors.accentRed, width: 2),
           ),
           labelStyle: AppTextStyles.caption.copyWith(color: AppColors.mute),
           hintStyle: AppTextStyles.body.copyWith(color: AppColors.mute),
@@ -101,26 +102,27 @@ class AppTheme {
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           fillColor: AppColors.darkSurface,
-          contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+          constraints: const BoxConstraints(minHeight: 44),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(999),
-            borderSide: const BorderSide(color: AppColors.darkHairline),
+            borderSide: const BorderSide(color: AppColors.darkHairline, width: 1),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(999),
-            borderSide: const BorderSide(color: AppColors.darkHairline),
+            borderSide: const BorderSide(color: AppColors.darkHairline, width: 1),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(999),
-            borderSide: const BorderSide(color: AppColors.darkPrimary, width: 1.5),
+            borderSide: const BorderSide(color: AppColors.darkPrimary, width: 2),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(999),
-            borderSide: const BorderSide(color: AppColors.accentRed),
+            borderSide: const BorderSide(color: AppColors.accentRed, width: 1),
           ),
           focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(999),
-            borderSide: const BorderSide(color: AppColors.accentRed, width: 1.5),
+            borderSide: const BorderSide(color: AppColors.accentRed, width: 2),
           ),
           labelStyle: AppTextStyles.caption.copyWith(color: AppColors.darkMute),
           hintStyle: AppTextStyles.body.copyWith(color: AppColors.darkMuteSoft),

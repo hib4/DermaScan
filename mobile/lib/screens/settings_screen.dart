@@ -15,44 +15,41 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(24, 26, 24, 110),
-          children: [
-            Text('Profile', style: Theme.of(context).textTheme.headlineMedium),
-            const SizedBox(height: 12),
-            Text(
-              'Account settings, privacy information, and app preferences.',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.mute),
-            ),
-            const SizedBox(height: 24),
-            const DisclaimerBanner(),
-            const SizedBox(height: 22),
-            const HealthInfoCard(
-              icon: CupertinoIcons.person,
-              title: 'Account',
-              body: 'Signed in with email and password.',
-            ),
-            const SizedBox(height: 12),
-            const HealthInfoCard(
-              icon: CupertinoIcons.textformat_size,
-              title: 'Accessibility',
-              body: 'DermaScan follows system text scaling and maintains large touch targets.',
-            ),
-            const SizedBox(height: 12),
-            const HealthInfoCard(
-              icon: CupertinoIcons.lock_shield,
-              title: 'Privacy and disclaimer',
-              body: 'Screening results are informational. Images are uploaded to your account history when online.',
-            ),
-            const SizedBox(height: 24),
-            SecondaryButton(
-              text: 'Logout',
-              onPressed: () => _showLogoutDialog(context),
-            ),
-          ],
-        ),
+      body: ListView(
+        padding: EdgeInsets.fromLTRB(24, 26 + MediaQuery.paddingOf(context).top, 24, 110 + MediaQuery.paddingOf(context).bottom),
+        children: [
+          Text('Profile', style: Theme.of(context).textTheme.headlineMedium),
+          const SizedBox(height: 12),
+          Text(
+            'Account settings, privacy information, and app preferences.',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.mute),
+          ),
+          const SizedBox(height: 24),
+          const DisclaimerBanner(),
+          const SizedBox(height: 22),
+          const HealthInfoCard(
+            icon: CupertinoIcons.person,
+            title: 'Account',
+            body: 'Signed in with email and password.',
+          ),
+          const SizedBox(height: 12),
+          const HealthInfoCard(
+            icon: CupertinoIcons.textformat_size,
+            title: 'Accessibility',
+            body: 'DermaScan follows system text scaling and maintains large touch targets.',
+          ),
+          const SizedBox(height: 12),
+          const HealthInfoCard(
+            icon: CupertinoIcons.lock_shield,
+            title: 'Privacy and disclaimer',
+            body: 'Screening results are informational. Images are uploaded to your account history when online.',
+          ),
+          const SizedBox(height: 24),
+          SecondaryButton(
+            text: 'Logout',
+            onPressed: () => _showLogoutDialog(context),
+          ),
+        ],
       ),
     );
   }

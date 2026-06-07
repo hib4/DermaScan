@@ -45,74 +45,72 @@ class _LoginScreenState extends State<LoginScreen> {
     final theme = Theme.of(context);
     final bottomPadding = MediaQuery.paddingOf(context).bottom;
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(28, 40, 28, 40 + bottomPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Sign in',
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  color: theme.colorScheme.onSurface,
-                ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(28, 40 + MediaQuery.paddingOf(context).top, 28, 40 + bottomPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Sign in',
+              style: theme.textTheme.headlineMedium?.copyWith(
+                color: theme.colorScheme.onSurface,
               ),
-              const SizedBox(height: 10),
-              Text(
-                'Continue to your scan history and saved screening results.',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.68),
-                ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Continue to your scan history and saved screening results.',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.68),
               ),
-              const SizedBox(height: 30),
-              const DisclaimerBanner(),
-              const SizedBox(height: 28),
-              CustomTextField(
-                controller: _email,
-                labelText: 'Email',
-                hintText: 'name@example.com',
-                keyboardType: TextInputType.emailAddress,
-              ),
-              const SizedBox(height: 16),
-              CustomTextField(
-                controller: _password,
-                labelText: 'Password',
-                obscureText: true,
-              ),
-              const SizedBox(height: 32),
-              BlocConsumer<AuthCubit, AuthState>(
-                listener: (context, state) {
-                  if (state is AuthError) {
-                    showAppToast(context, state.message, isError: true);
-                  } else if (state is AuthAuthenticated) {
-                    context.pushReplacement(const ShellRoute());
-                  }
-                },
-                builder: (context, state) {
-                  final loading = state is AuthLoading;
-                  return Column(
-                    children: [
-                      PrimaryButton(
-                        text: 'Sign In',
-                        onPressed: loading ? null : _onLogin,
-                        isLoading: loading,
-                      ),
-                      const SizedBox(height: 10),
-                      SecondaryButton(
-                        text: 'Create Account',
-                        onPressed: loading ? null : () => context.push(const RegistrationScreen()),
-                      ),
-                      const SizedBox(height: 12),
-                      TextLink(
-                        text: 'DermaScan uses email and password sign-in in this version.',
-                        onPressed: null,
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 30),
+            const DisclaimerBanner(),
+            const SizedBox(height: 28),
+            CustomTextField(
+              controller: _email,
+              labelText: 'Email',
+              hintText: 'name@example.com',
+              keyboardType: TextInputType.emailAddress,
+            ),
+            const SizedBox(height: 16),
+            CustomTextField(
+              controller: _password,
+              labelText: 'Password',
+              obscureText: true,
+            ),
+            const SizedBox(height: 32),
+            BlocConsumer<AuthCubit, AuthState>(
+              listener: (context, state) {
+                if (state is AuthError) {
+                  showAppToast(context, state.message, isError: true);
+                } else if (state is AuthAuthenticated) {
+                  context.pushReplacement(const ShellRoute());
+                }
+              },
+              builder: (context, state) {
+                final loading = state is AuthLoading;
+                return Column(
+                  children: [
+                    PrimaryButton(
+                      text: 'Sign In',
+                      onPressed: loading ? null : _onLogin,
+                      isLoading: loading,
+                    ),
+                    const SizedBox(height: 10),
+                    SecondaryButton(
+                      text: 'Create Account',
+                      onPressed: loading ? null : () => context.push(const RegistrationScreen()),
+                    ),
+                    const SizedBox(height: 12),
+                    TextLink(
+                      text: 'DermaScan uses email and password sign-in in this version.',
+                      onPressed: null,
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

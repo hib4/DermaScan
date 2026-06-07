@@ -67,81 +67,79 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     final theme = Theme.of(context);
     final bottomPadding = MediaQuery.paddingOf(context).bottom;
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(28, 40, 28, 40 + bottomPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Create account',
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  color: theme.colorScheme.onSurface,
-                ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(28, 40 + MediaQuery.paddingOf(context).top, 28, 40 + bottomPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Create account',
+              style: theme.textTheme.headlineMedium?.copyWith(
+                color: theme.colorScheme.onSurface,
               ),
-              const SizedBox(height: 10),
-              Text(
-                'Save screening results and review them later.',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.68),
-                ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Save screening results and review them later.',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.68),
               ),
-              const SizedBox(height: 30),
-              const DisclaimerBanner(),
-              const SizedBox(height: 28),
-              CustomTextField(
-                controller: _name,
-                labelText: 'Name',
-                hintText: 'Your name',
-              ),
-              const SizedBox(height: 16),
-              CustomTextField(
-                controller: _email,
-                labelText: 'Email',
-                hintText: 'name@example.com',
-                keyboardType: TextInputType.emailAddress,
-              ),
-              const SizedBox(height: 16),
-              CustomTextField(
-                controller: _password,
-                labelText: 'Password',
-                obscureText: true,
-              ),
-              const SizedBox(height: 16),
-              CustomTextField(
-                controller: _confirm,
-                labelText: 'Confirm Password',
-                obscureText: true,
-              ),
-              const SizedBox(height: 32),
-              BlocConsumer<AuthCubit, AuthState>(
-                listener: (context, state) {
-                  if (state is AuthError) {
-                    showAppToast(context, state.message, isError: true);
-                  } else if (state is AuthAuthenticated) {
-                    context.pushReplacement(const ShellRoute());
-                  }
-                },
-                builder: (context, state) {
-                  final loading = state is AuthLoading;
-                  return Column(
-                    children: [
-                      PrimaryButton(
-                        text: 'Create Account',
-                        onPressed: loading ? null : _onRegister,
-                        isLoading: loading,
-                      ),
-                      const SizedBox(height: 12),
-                      SecondaryButton(
-                        text: 'Back to Login',
-                        onPressed: loading ? null : () => context.pushReplacement(const LoginScreen()),
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 30),
+            const DisclaimerBanner(),
+            const SizedBox(height: 28),
+            CustomTextField(
+              controller: _name,
+              labelText: 'Name',
+              hintText: 'Your name',
+            ),
+            const SizedBox(height: 16),
+            CustomTextField(
+              controller: _email,
+              labelText: 'Email',
+              hintText: 'name@example.com',
+              keyboardType: TextInputType.emailAddress,
+            ),
+            const SizedBox(height: 16),
+            CustomTextField(
+              controller: _password,
+              labelText: 'Password',
+              obscureText: true,
+            ),
+            const SizedBox(height: 16),
+            CustomTextField(
+              controller: _confirm,
+              labelText: 'Confirm Password',
+              obscureText: true,
+            ),
+            const SizedBox(height: 32),
+            BlocConsumer<AuthCubit, AuthState>(
+              listener: (context, state) {
+                if (state is AuthError) {
+                  showAppToast(context, state.message, isError: true);
+                } else if (state is AuthAuthenticated) {
+                  context.pushReplacement(const ShellRoute());
+                }
+              },
+              builder: (context, state) {
+                final loading = state is AuthLoading;
+                return Column(
+                  children: [
+                    PrimaryButton(
+                      text: 'Create Account',
+                      onPressed: loading ? null : _onRegister,
+                      isLoading: loading,
+                    ),
+                    const SizedBox(height: 12),
+                    SecondaryButton(
+                      text: 'Back to Login',
+                      onPressed: loading ? null : () => context.pushReplacement(const LoginScreen()),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
