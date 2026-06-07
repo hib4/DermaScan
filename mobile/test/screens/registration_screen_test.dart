@@ -38,19 +38,39 @@ void main() {
           child: MaterialApp(home: RegistrationScreen()),
         );
 
-    testWidgets('shows email, password, and confirm password fields',
+    Future<void> _tapRegister(WidgetTester tester) async {
+      final button = find.byType(PrimaryButton);
+      await tester.ensureVisible(button);
+      await tester.pump();
+      await tester.tap(button);
+    }
+
+    testWidgets('shows name, email, password, and confirm password fields',
         (tester) async {
       await tester.pumpWidget(build());
-      expect(find.byType(CupertinoTextField), findsNWidgets(3));
+      expect(find.byType(CupertinoTextField), findsNWidgets(4));
+    });
+
+    testWidgets('shows toast when name is empty', (tester) async {
+      await tester.pumpWidget(build());
+      final fields = find.byType(CupertinoTextField);
+      await tester.enterText(fields.at(1), 'a@b.com');
+      await tester.enterText(fields.at(2), 'password123');
+      await tester.enterText(fields.at(3), 'password123');
+      await _tapRegister(tester);
+      await tester.pump();
+      expect(find.text('Please enter your name'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 3));
     });
 
     testWidgets('shows toast when passwords do not match', (tester) async {
       await tester.pumpWidget(build());
       final fields = find.byType(CupertinoTextField);
-      await tester.enterText(fields.at(0), 'a@b.com');
-      await tester.enterText(fields.at(1), 'password123');
-      await tester.enterText(fields.at(2), 'different');
-      await tester.tap(find.byType(PrimaryButton));
+      await tester.enterText(fields.at(0), 'Test User');
+      await tester.enterText(fields.at(1), 'a@b.com');
+      await tester.enterText(fields.at(2), 'password123');
+      await tester.enterText(fields.at(3), 'different');
+      await _tapRegister(tester);
       await tester.pump();
       expect(find.text('Passwords do not match'), findsOneWidget);
       await tester.pump(const Duration(seconds: 3));
@@ -59,10 +79,11 @@ void main() {
     testWidgets('shows toast when password too short', (tester) async {
       await tester.pumpWidget(build());
       final fields = find.byType(CupertinoTextField);
-      await tester.enterText(fields.at(0), 'a@b.com');
-      await tester.enterText(fields.at(1), 'short');
+      await tester.enterText(fields.at(0), 'Test User');
+      await tester.enterText(fields.at(1), 'a@b.com');
       await tester.enterText(fields.at(2), 'short');
-      await tester.tap(find.byType(PrimaryButton));
+      await tester.enterText(fields.at(3), 'short');
+      await _tapRegister(tester);
       await tester.pump();
       expect(find.text('Password must be at least 6 characters'), findsOneWidget);
       await tester.pump(const Duration(seconds: 3));

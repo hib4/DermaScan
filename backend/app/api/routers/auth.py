@@ -15,7 +15,7 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
 async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)):
     hashed = hash_password(payload.password)
-    user = User(email=payload.email, hashed_password=hashed)
+    user = User(name=payload.name, email=payload.email, hashed_password=hashed)
     db.add(user)
     try:
         await db.commit()

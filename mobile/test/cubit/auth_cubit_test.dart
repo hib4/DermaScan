@@ -52,7 +52,7 @@ void main() {
       'register success -> Authenticated',
       build: () => AuthCubit(authService: _auth(
         c: MockClient((_) async => http.Response(jsonEncode({'access_token': 'jwt'}), 201)))),
-      act: (c) => c.register(email: 'a@b.com', password: 'pw'),
+      act: (c) => c.register(name: 'Test User', email: 'a@b.com', password: 'pw'),
       expect: () => [isA<AuthLoading>(), isA<AuthAuthenticated>()],
     );
 
@@ -60,7 +60,7 @@ void main() {
       'register duplicate -> AuthError',
       build: () => AuthCubit(authService: _auth(
         c: MockClient((_) async => http.Response(jsonEncode({'detail': 'Dup'}), 409)))),
-      act: (c) => c.register(email: 'a@b.com', password: 'pw'),
+      act: (c) => c.register(name: 'Test User', email: 'a@b.com', password: 'pw'),
       expect: () => [isA<AuthLoading>(), isA<AuthError>()],
     );
 

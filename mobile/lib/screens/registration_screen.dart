@@ -19,12 +19,14 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _confirm = TextEditingController();
 
   @override
   void dispose() {
+    _name.dispose();
     _email.dispose();
     _password.dispose();
     _confirm.dispose();
@@ -32,6 +34,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   String? _validate() {
+    if (_name.text.trim().isEmpty) {
+      return 'Please enter your name';
+    }
     if (_email.text.trim().isEmpty || !_email.text.contains('@')) {
       return 'Please enter a valid email';
     }
@@ -51,6 +56,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       return;
     }
     context.read<AuthCubit>().register(
+          name: _name.text.trim(),
           email: _email.text.trim(),
           password: _password.text,
         );
@@ -82,6 +88,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               const SizedBox(height: 30),
               const DisclaimerBanner(),
               const SizedBox(height: 28),
+              CustomTextField(
+                controller: _name,
+                labelText: 'Name',
+                hintText: 'Your name',
+              ),
+              const SizedBox(height: 16),
               CustomTextField(
                 controller: _email,
                 labelText: 'Email',

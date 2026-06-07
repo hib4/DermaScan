@@ -10,10 +10,10 @@ class AuthService {
       : _apiClient = apiClient,
         _storage = storage;
 
-  Future<void> register({required String email, required String password}) async {
+  Future<void> register({required String name, required String email, required String password}) async {
     final resp = await _apiClient.post(
       ApiConfig.register,
-      {'email': email, 'password': password},
+      {'name': name, 'email': email, 'password': password},
     );
     await _storage.setToken((resp as Map<String, dynamic>)['access_token'] as String);
   }

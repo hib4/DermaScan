@@ -34,7 +34,7 @@ void main() {
     test('register stores token', () async {
       final c = MockClient((_) async =>
           http.Response(jsonEncode({'access_token': 'jwt'}), 201));
-      await _make(c: c).register(email: 'a@b.com', password: 'pw');
+      await _make(c: c).register(name: 'Test User', email: 'a@b.com', password: 'pw');
       expect(await storage.getToken(), 'jwt');
     });
 
@@ -42,7 +42,7 @@ void main() {
       final c = MockClient((_) async =>
           http.Response(jsonEncode({'detail': 'Dup'}), 409));
       expect(
-        () => _make(c: c).register(email: 'a@b.com', password: 'x'),
+        () => _make(c: c).register(name: 'Test User', email: 'a@b.com', password: 'x'),
         throwsA(isA<ConflictException>()),
       );
     });

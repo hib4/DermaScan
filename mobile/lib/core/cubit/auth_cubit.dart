@@ -38,11 +38,11 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> register({required String email, required String password}) async {
+  Future<void> register({required String name, required String email, required String password}) async {
     print('[AuthCubit] Register attempt: $email');
     emit(AuthLoading());
     try {
-      await _authService.register(email: email, password: password);
+      await _authService.register(name: name, email: email, password: password);
       print('[AuthCubit] Register successful');
       emit(AuthAuthenticated());
     } on ConflictException catch (e) {
