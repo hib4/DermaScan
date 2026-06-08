@@ -19,16 +19,15 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDisabled = onPressed == null;
+    final disabledFill = AppColors.disabledFill(context);
 
     return CupertinoButton(
       onPressed: isDisabled || isLoading ? null : onPressed,
       minimumSize: const Size(double.infinity, 50),
       borderRadius: BorderRadius.circular(999),
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
-      color: isDisabled
-          ? AppColors.ink.withValues(alpha: 0.12)
-          : AppColors.primary,
-      disabledColor: AppColors.ink.withValues(alpha: 0.12),
+      color: isDisabled ? disabledFill : AppColors.primaryInteractive(context),
+      disabledColor: disabledFill,
       child: isLoading
           ? const SizedBox(
               height: 20,
@@ -39,7 +38,7 @@ class PrimaryButton extends StatelessWidget {
               text,
               style: AppTextStyles.button.copyWith(
                 color: isDisabled
-                    ? AppColors.ink.withValues(alpha: 0.38)
+                    ? AppColors.disabledText(context)
                     : AppColors.onPrimary,
               ),
             ),

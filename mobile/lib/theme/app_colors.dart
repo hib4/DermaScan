@@ -46,4 +46,68 @@ class AppColors {
   static const Color darkBodyMid = Color(0xFFCCCCCC);
   static const Color darkMute = Color(0xFF999999);
   static const Color darkMuteSoft = Color(0xFF777777);
+
+  static bool isDark(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark;
+  }
+
+  static Color background(BuildContext context) {
+    return isDark(context) ? darkCanvas : canvas;
+  }
+
+  static Color surface(BuildContext context) {
+    return isDark(context) ? darkSurface : canvas;
+  }
+
+  static Color elevatedSurface(BuildContext context) {
+    return isDark(context) ? surfaceTile1 : surfacePearl;
+  }
+
+  static Color subtleSurface(BuildContext context) {
+    return isDark(context) ? surfaceTile2 : canvasParchment;
+  }
+
+  static Color border(BuildContext context) {
+    return isDark(context) ? darkHairline : hairline;
+  }
+
+  static Color softBorder(BuildContext context) {
+    return isDark(context) ? darkHairline : dividerSoft;
+  }
+
+  static Color bodyText(BuildContext context) {
+    return isDark(context) ? darkBody : body;
+  }
+
+  static Color strongText(BuildContext context) {
+    return isDark(context) ? darkInkStrong : inkStrong;
+  }
+
+  static Color mutedText(BuildContext context) {
+    return isDark(context) ? darkBodyMid : mute;
+  }
+
+  static Color mutedIcon(BuildContext context) {
+    return isDark(context) ? darkMute : mute;
+  }
+
+  static Color placeholderText(BuildContext context) {
+    return isDark(context) ? darkMuteSoft : mute;
+  }
+
+  static Color primaryInteractive(BuildContext context) {
+    return isDark(context) ? primaryOnDark : primary;
+  }
+
+  static Color focusRing(BuildContext context) {
+    return isDark(context) ? primaryOnDark : primaryFocus;
+  }
+
+  static Color disabledFill(BuildContext context) {
+    return bodyText(context).withValues(alpha: 0.12);
+  }
+
+  static Color disabledText(BuildContext context) {
+    return bodyText(context).withValues(alpha: 0.38);
+  }
 }

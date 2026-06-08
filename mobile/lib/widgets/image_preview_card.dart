@@ -24,7 +24,9 @@ class ImagePreviewCard extends StatelessWidget {
     Widget? imageWidget;
     if (hasDataUri) {
       // Decode data URI: "data:image/jpeg;base64,..." or raw base64
-      final raw = imageData!.contains(',') ? imageData!.split(',').last : imageData!;
+      final raw = imageData!.contains(',')
+          ? imageData!.split(',').last
+          : imageData!;
       try {
         final bytes = base64Decode(raw);
         imageWidget = Image.memory(bytes, fit: BoxFit.cover);
@@ -40,15 +42,19 @@ class ImagePreviewCard extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: height,
-        color: AppColors.canvasParchment,
-        child: imageWidget ?? _placeholder(),
+        color: AppColors.subtleSurface(context),
+        child: imageWidget ?? _placeholder(context),
       ),
     );
   }
 
-  Widget _placeholder() {
-    return const Center(
-      child: Icon(CupertinoIcons.photo, size: 42, color: AppColors.mute),
+  Widget _placeholder(BuildContext context) {
+    return Center(
+      child: Icon(
+        CupertinoIcons.photo,
+        size: 42,
+        color: AppColors.mutedIcon(context),
+      ),
     );
   }
 }

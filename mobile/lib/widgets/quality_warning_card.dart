@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 
 class QualityWarningCard extends StatelessWidget {
-  const QualityWarningCard({
-    super.key,
-    required this.message,
-  });
+  const QualityWarningCard({super.key, required this.message});
 
   final String message;
 
@@ -16,19 +13,25 @@ class QualityWarningCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.surfacePearl,
+        color: AppColors.elevatedSurface(context),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.dividerSoft),
+        border: Border.all(color: AppColors.softBorder(context)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(CupertinoIcons.info_circle, color: AppColors.accentOrange, size: 22),
+          const Icon(
+            CupertinoIcons.info_circle,
+            color: AppColors.accentOrange,
+            size: 22,
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               message,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.ink),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.bodyText(context),
+              ),
             ),
           ),
         ],

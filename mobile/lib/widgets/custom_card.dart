@@ -21,13 +21,15 @@ class CustomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final shadows = elevationLevel >= 4 ? AppShadows.byLevel(elevationLevel) : AppShadows.flat;
+    final shadows = elevationLevel >= 4
+        ? AppShadows.byLevel(elevationLevel)
+        : AppShadows.flat;
 
     Widget card = Container(
       decoration: BoxDecoration(
         color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: AppColors.dividerSoft),
+        border: Border.all(color: AppColors.softBorder(context)),
         boxShadow: shadows,
       ),
       clipBehavior: Clip.antiAlias,

@@ -21,7 +21,7 @@ void showAppToast(
           decoration: BoxDecoration(
             color: isError
                 ? AppColors.accentRed.withValues(alpha: 0.94)
-                : AppColors.ink.withValues(alpha: 0.94),
+                : AppColors.strongText(context).withValues(alpha: 0.94),
             borderRadius: BorderRadius.circular(18),
           ),
           child: Padding(

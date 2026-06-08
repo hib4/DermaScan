@@ -16,7 +16,9 @@ class TextLink extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = onDark ? AppColors.primaryOnDark : AppColors.primary;
+    final color = onDark
+        ? AppColors.primaryOnDark
+        : AppColors.primaryInteractive(context);
     return CupertinoButton(
       onPressed: onPressed,
       minimumSize: const Size(44, 44),
@@ -24,9 +26,7 @@ class TextLink extends StatelessWidget {
       child: Text(
         text,
         style: AppTextStyles.body.copyWith(
-          color: onPressed == null
-              ? color.withValues(alpha: 0.45)
-              : color,
+          color: onPressed == null ? color.withValues(alpha: 0.45) : color,
         ),
       ),
     );

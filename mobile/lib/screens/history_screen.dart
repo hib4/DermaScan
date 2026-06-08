@@ -31,8 +31,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
       body: BlocBuilder<ScanHistoryCubit, ScanHistoryState>(
         builder: (context, state) {
           if (state is ScanHistoryLoading || state is ScanHistoryInitial) {
-            return const Center(
-              child: CupertinoActivityIndicator(color: AppColors.primary),
+            return Center(
+              child: CupertinoActivityIndicator(
+                color: AppColors.primaryInteractive(context),
+              ),
             );
           }
           if (state is ScanHistoryError) return _buildErrorState(state.message);
@@ -40,8 +42,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
             if (state.scans.isEmpty) return _buildEmptyState();
             return _buildScanList(state.scans);
           }
-          return const Center(
-            child: CupertinoActivityIndicator(color: AppColors.primary),
+          return Center(
+            child: CupertinoActivityIndicator(
+              color: AppColors.primaryInteractive(context),
+            ),
           );
         },
       ),
@@ -53,13 +57,20 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return RefreshIndicator(
       onRefresh: () => context.read<ScanHistoryCubit>().loadHistory(),
       child: ListView(
-        padding: EdgeInsets.fromLTRB(24, 26 + MediaQuery.paddingOf(context).top, 24, 110 + MediaQuery.paddingOf(context).bottom),
+        padding: EdgeInsets.fromLTRB(
+          24,
+          26 + MediaQuery.paddingOf(context).top,
+          24,
+          110 + MediaQuery.paddingOf(context).bottom,
+        ),
         children: [
           Text('History', style: theme.textTheme.headlineMedium),
           const SizedBox(height: 10),
           Text(
             'Previous screenings appear in reverse chronological order.',
-            style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.mute),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: AppColors.mutedText(context),
+            ),
           ),
           const SizedBox(height: 24),
           ...scans.map(
@@ -80,7 +91,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return EmptyState(
       icon: CupertinoIcons.clock,
       title: 'No scans yet',
-      message: 'Your saved screening history will appear here after your first scan.',
+      message:
+          'Your saved screening history will appear here after your first scan.',
       actionLabel: 'Refresh',
       onAction: () => context.read<ScanHistoryCubit>().loadHistory(),
     );
@@ -92,12 +104,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(CupertinoIcons.exclamationmark_circle, size: 48, color: AppColors.accentRed),
-          const SizedBox(height: 16),
-          Text(
-            'Failed to load history',
-            style: theme.textTheme.titleMedium,
+          const Icon(
+            CupertinoIcons.exclamationmark_circle,
+            size: 48,
+            color: AppColors.accentRed,
           ),
+          const SizedBox(height: 16),
+          Text('Failed to load history', style: theme.textTheme.titleMedium),
           const SizedBox(height: 8),
           Text(
             message,

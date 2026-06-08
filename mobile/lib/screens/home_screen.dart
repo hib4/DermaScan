@@ -35,13 +35,20 @@ class _HomeScreenState extends State<HomeScreen> {
     final theme = Theme.of(context);
     return Scaffold(
       body: SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(24, 26 + MediaQuery.paddingOf(context).top, 24, 110 + MediaQuery.paddingOf(context).bottom),
+        padding: EdgeInsets.fromLTRB(
+          24,
+          26 + MediaQuery.paddingOf(context).top,
+          24,
+          110 + MediaQuery.paddingOf(context).bottom,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Today',
-              style: theme.textTheme.labelLarge?.copyWith(color: AppColors.mute),
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: AppColors.mutedText(context),
+              ),
             ),
             const SizedBox(height: 8),
             Text(
@@ -51,26 +58,34 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 16),
             Text(
               'Capture a clear image and DermaScan will provide an informational AI screening result.',
-              style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.mute),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.mutedText(context),
+              ),
             ),
             const SizedBox(height: 26),
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: AppColors.canvasParchment,
+                color: AppColors.subtleSurface(context),
                 borderRadius: BorderRadius.circular(18),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(CupertinoIcons.viewfinder, color: AppColors.primary, size: 34),
+                  Icon(
+                    CupertinoIcons.viewfinder,
+                    color: AppColors.primaryInteractive(context),
+                    size: 34,
+                  ),
                   const SizedBox(height: 22),
                   Text('Scan Skin', style: theme.textTheme.titleMedium),
                   const SizedBox(height: 8),
                   Text(
                     'Use the camera or choose a photo from your gallery.',
-                    style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.mute),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: AppColors.mutedText(context),
+                    ),
                   ),
                   const SizedBox(height: 22),
                   PrimaryButton(
@@ -119,7 +134,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Text(
                     'Know what changes matter.',
-                    style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Text(

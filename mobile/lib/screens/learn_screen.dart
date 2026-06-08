@@ -20,27 +20,41 @@ class _LearnScreenState extends State<LearnScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final conditions = ConditionLibrary.all
-        .where((item) => item.label.toLowerCase().contains(_query.toLowerCase()))
+        .where(
+          (item) => item.label.toLowerCase().contains(_query.toLowerCase()),
+        )
         .toList();
 
     return Scaffold(
       body: ListView(
-        padding: EdgeInsets.fromLTRB(24, 26 + MediaQuery.paddingOf(context).top, 24, 110 + MediaQuery.paddingOf(context).bottom),
+        padding: EdgeInsets.fromLTRB(
+          24,
+          26 + MediaQuery.paddingOf(context).top,
+          24,
+          110 + MediaQuery.paddingOf(context).bottom,
+        ),
         children: [
           Text('Learn', style: theme.textTheme.headlineMedium),
           const SizedBox(height: 12),
           Text(
             'Educational skin health information, written for screening context rather than diagnosis.',
-            style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.mute),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: AppColors.mutedText(context),
+            ),
           ),
           const SizedBox(height: 24),
           CupertinoSearchTextField(
             onChanged: (value) => setState(() => _query = value),
             placeholder: 'Search conditions',
-            backgroundColor: AppColors.surfacePearl,
+            backgroundColor: AppColors.elevatedSurface(context),
             borderRadius: BorderRadius.circular(999),
-            itemColor: AppColors.mute,
-            style: theme.textTheme.bodyMedium,
+            itemColor: AppColors.mutedIcon(context),
+            placeholderStyle: theme.textTheme.bodyMedium?.copyWith(
+              color: AppColors.placeholderText(context),
+            ),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: AppColors.bodyText(context),
+            ),
           ),
           const SizedBox(height: 24),
           HealthInfoCard(
@@ -56,8 +70,10 @@ class _LearnScreenState extends State<LearnScreen> {
               padding: const EdgeInsets.only(bottom: 12),
               child: HealthInfoCard(
                 title: condition.label,
-                body: '${condition.riskLevel.label} urgency. ${condition.overview}',
-                onTap: () => context.push(ResultDetailScreen(condition: condition)),
+                body:
+                    '${condition.riskLevel.label} urgency. ${condition.overview}',
+                onTap: () =>
+                    context.push(ResultDetailScreen(condition: condition)),
               ),
             ),
           ),

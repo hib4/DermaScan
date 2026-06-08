@@ -16,13 +16,20 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
-        padding: EdgeInsets.fromLTRB(24, 26 + MediaQuery.paddingOf(context).top, 24, 110 + MediaQuery.paddingOf(context).bottom),
+        padding: EdgeInsets.fromLTRB(
+          24,
+          26 + MediaQuery.paddingOf(context).top,
+          24,
+          110 + MediaQuery.paddingOf(context).bottom,
+        ),
         children: [
           Text('Profile', style: Theme.of(context).textTheme.headlineMedium),
           const SizedBox(height: 12),
           Text(
             'Account settings, privacy information, and app preferences.',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.mute),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: AppColors.mutedText(context),
+            ),
           ),
           const SizedBox(height: 24),
           const DisclaimerBanner(),
@@ -36,13 +43,15 @@ class SettingsScreen extends StatelessWidget {
           const HealthInfoCard(
             icon: CupertinoIcons.textformat_size,
             title: 'Accessibility',
-            body: 'DermaScan follows system text scaling and maintains large touch targets.',
+            body:
+                'DermaScan follows system text scaling and maintains large touch targets.',
           ),
           const SizedBox(height: 12),
           const HealthInfoCard(
             icon: CupertinoIcons.lock_shield,
             title: 'Privacy and disclaimer',
-            body: 'Screening results are informational. Images are uploaded to your account history when online.',
+            body:
+                'Screening results are informational. Images are uploaded to your account history when online.',
           ),
           const SizedBox(height: 24),
           SecondaryButton(

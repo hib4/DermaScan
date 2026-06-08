@@ -21,6 +21,7 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    final navBackground = AppColors.background(context).withValues(alpha: 0.96);
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
@@ -34,8 +35,8 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
       ),
       bottomNavigationBar: DecoratedBox(
         decoration: BoxDecoration(
-          color: AppColors.canvas.withValues(alpha: 0.96),
-          border: const Border(top: BorderSide(color: AppColors.dividerSoft)),
+          color: navBackground,
+          border: Border(top: BorderSide(color: AppColors.softBorder(context))),
         ),
         child: SafeArea(
           top: false,
@@ -43,36 +44,36 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
             currentIndex: _currentIndex,
             onTap: (index) => setState(() => _currentIndex = index),
             backgroundColor: Colors.transparent,
-            activeColor: AppColors.primary,
-            inactiveColor: AppColors.mute,
+            activeColor: AppColors.primaryInteractive(context),
+            inactiveColor: AppColors.mutedIcon(context),
             border: null,
             iconSize: 23,
             items: const [
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.house),
-            activeIcon: Icon(CupertinoIcons.house_fill),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.camera),
-            activeIcon: Icon(CupertinoIcons.camera_fill),
-            label: 'Scan',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.clock),
-            activeIcon: Icon(CupertinoIcons.clock_fill),
-            label: 'History',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.book),
-            activeIcon: Icon(CupertinoIcons.book_fill),
-            label: 'Learn',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.person),
-            activeIcon: Icon(CupertinoIcons.person_fill),
-            label: 'Profile',
-          ),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.house),
+                activeIcon: Icon(CupertinoIcons.house_fill),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.camera),
+                activeIcon: Icon(CupertinoIcons.camera_fill),
+                label: 'Scan',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.clock),
+                activeIcon: Icon(CupertinoIcons.clock_fill),
+                label: 'History',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.book),
+                activeIcon: Icon(CupertinoIcons.book_fill),
+                label: 'Learn',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.person),
+                activeIcon: Icon(CupertinoIcons.person_fill),
+                label: 'Profile',
+              ),
             ],
           ),
         ),

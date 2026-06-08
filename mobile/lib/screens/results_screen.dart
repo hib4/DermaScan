@@ -31,20 +31,27 @@ class ResultsScreen extends StatelessWidget {
 
     if (viewModel == null) {
       return Scaffold(
-        appBar: const CupertinoNavigationBar(
-          middle: Text('Results'),
-          border: Border(bottom: BorderSide(color: AppColors.dividerSoft)),
+        appBar: CupertinoNavigationBar(
+          middle: const Text('Results'),
+          backgroundColor: AppColors.background(context),
+          border: Border(
+            bottom: BorderSide(color: AppColors.softBorder(context)),
+          ),
         ),
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(CupertinoIcons.exclamationmark_circle, size: 48, color: AppColors.mute),
+              Icon(
+                CupertinoIcons.exclamationmark_circle,
+                size: 48,
+                color: AppColors.mutedIcon(context),
+              ),
               const SizedBox(height: 16),
               Text(
                 'No screening result available',
                 style: theme.textTheme.titleMedium?.copyWith(
-                  color: AppColors.bodyMid,
+                  color: AppColors.mutedText(context),
                 ),
               ),
               const SizedBox(height: 16),
@@ -67,14 +74,20 @@ class ResultsScreen extends StatelessWidget {
     final condition = ConditionLibrary.forLabel(viewModel.label);
     final bottomPadding = MediaQuery.paddingOf(context).bottom;
     return Scaffold(
-      appBar: const CupertinoNavigationBar(
-        middle: Text('Result'),
-        border: Border(bottom: BorderSide(color: AppColors.dividerSoft)),
+      appBar: CupertinoNavigationBar(
+        middle: const Text('Result'),
+        backgroundColor: AppColors.background(context),
+        border: Border(
+          bottom: BorderSide(color: AppColors.softBorder(context)),
+        ),
       ),
       body: ListView(
         padding: EdgeInsets.fromLTRB(24, 16, 24, 34 + bottomPadding),
         children: [
-          ImagePreviewCard(imagePath: viewModel.imagePath, imageData: viewModel.imageData),
+          ImagePreviewCard(
+            imagePath: viewModel.imagePath,
+            imageData: viewModel.imageData,
+          ),
           const SizedBox(height: 18),
           ResultCard(condition: condition, confidence: viewModel.confidence),
           const SizedBox(height: 18),
@@ -97,7 +110,8 @@ class ResultsScreen extends StatelessWidget {
             text: condition.riskLevel == RiskLevel.high
                 ? 'Review Next Steps'
                 : 'Learn More',
-            onPressed: () => context.push(ResultDetailScreen(condition: condition)),
+            onPressed: () =>
+                context.push(ResultDetailScreen(condition: condition)),
           ),
           const SizedBox(height: 10),
           SecondaryButton(

@@ -25,13 +25,18 @@ class ResultCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppColors.surfacePearl,
+        color: AppColors.elevatedSurface(context),
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(condition.resultLead, style: theme.textTheme.bodySmall?.copyWith(color: AppColors.mute)),
+          Text(
+            condition.resultLead,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: AppColors.mutedText(context),
+            ),
+          ),
           const SizedBox(height: 10),
           Text(condition.label, style: theme.textTheme.headlineMedium),
           const SizedBox(height: 18),
@@ -62,13 +67,15 @@ class ResultCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: condition.riskLevel == RiskLevel.high
                   ? AppColors.accentRed.withValues(alpha: 0.08)
-                  : AppColors.canvas,
+                  : AppColors.surface(context),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppColors.dividerSoft),
+              border: Border.all(color: AppColors.softBorder(context)),
             ),
             child: Text(
               condition.riskLevel.nextStep,
-              style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
@@ -78,11 +85,7 @@ class ResultCard extends StatelessWidget {
 }
 
 class _Metric extends StatelessWidget {
-  const _Metric({
-    required this.label,
-    required this.value,
-    this.valueColor,
-  });
+  const _Metric({required this.label, required this.value, this.valueColor});
 
   final String label;
   final String value;
@@ -94,19 +97,24 @@ class _Metric extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.canvas,
+        color: AppColors.surface(context),
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.dividerSoft),
+        border: Border.all(color: AppColors.softBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: theme.textTheme.labelSmall?.copyWith(color: AppColors.mute)),
+          Text(
+            label,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: AppColors.mutedText(context),
+            ),
+          ),
           const SizedBox(height: 5),
           Text(
             value,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: valueColor ?? AppColors.ink,
+              color: valueColor ?? AppColors.bodyText(context),
               fontWeight: FontWeight.w600,
             ),
           ),

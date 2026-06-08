@@ -23,23 +23,30 @@ class HealthInfoCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppColors.surfacePearl,
+        color: AppColors.elevatedSurface(context),
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: AppColors.dividerSoft),
+        border: Border.all(color: AppColors.softBorder(context)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (icon != null) ...[
-            Icon(icon, color: AppColors.primary, size: 24),
+            Icon(icon, color: AppColors.primaryInteractive(context), size: 24),
             const SizedBox(height: 20),
           ],
           Text(
             title,
-            style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
           ),
           const SizedBox(height: 8),
-          Text(body, style: theme.textTheme.bodySmall?.copyWith(color: AppColors.mute)),
+          Text(
+            body,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: AppColors.mutedText(context),
+            ),
+          ),
         ],
       ),
     );

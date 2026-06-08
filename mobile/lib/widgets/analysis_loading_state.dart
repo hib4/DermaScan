@@ -40,7 +40,10 @@ class _AnalysisLoadingStateState extends State<AnalysisLoadingState> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const CupertinoActivityIndicator(radius: 18, color: AppColors.primary),
+            CupertinoActivityIndicator(
+              radius: 18,
+              color: AppColors.primaryInteractive(context),
+            ),
             const SizedBox(height: 28),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 260),
@@ -54,7 +57,9 @@ class _AnalysisLoadingStateState extends State<AnalysisLoadingState> {
             const SizedBox(height: 10),
             Text(
               'This screening is informational and does not replace professional medical advice.',
-              style: theme.textTheme.bodySmall?.copyWith(color: AppColors.mute),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: AppColors.mutedText(context),
+              ),
               textAlign: TextAlign.center,
             ),
           ],

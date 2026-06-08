@@ -18,6 +18,9 @@ class SecondaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDisabled = onPressed == null;
+    final textColor = isDisabled
+        ? AppColors.disabledText(context)
+        : AppColors.primaryInteractive(context);
 
     return CupertinoButton(
       onPressed: isDisabled || isLoading ? null : onPressed,
@@ -26,12 +29,12 @@ class SecondaryButton extends StatelessWidget {
       padding: EdgeInsets.zero,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: AppColors.canvas,
+          color: AppColors.surface(context),
           borderRadius: BorderRadius.circular(999),
           border: Border.all(
             color: isDisabled
-                ? AppColors.ink.withValues(alpha: 0.12)
-                : AppColors.hairline,
+                ? AppColors.disabledFill(context)
+                : AppColors.border(context),
           ),
         ),
         child: Padding(
@@ -41,19 +44,15 @@ class SecondaryButton extends StatelessWidget {
                 ? const SizedBox(
                     height: 20,
                     width: 20,
-                    child: CupertinoActivityIndicator(color: AppColors.mute),
+                    child: CupertinoActivityIndicator(),
                   )
                 : Text(
                     text,
-                    style: AppTextStyles.button.copyWith(
-                      color: isDisabled
-                          ? AppColors.ink.withValues(alpha: 0.38)
-                          : AppColors.primary,
-                    ),
+                    style: AppTextStyles.button.copyWith(color: textColor),
                   ),
-              ),
           ),
         ),
+      ),
     );
   }
 }

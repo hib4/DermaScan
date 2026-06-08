@@ -14,7 +14,7 @@ class DisclaimerBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = onDark ? Colors.white : AppColors.ink;
+    final color = onDark ? Colors.white : AppColors.bodyText(context);
     return Semantics(
       label: text,
       child: Container(
@@ -23,19 +23,19 @@ class DisclaimerBanner extends StatelessWidget {
         decoration: BoxDecoration(
           color: onDark
               ? Colors.white.withValues(alpha: 0.09)
-              : AppColors.surfacePearl,
+              : AppColors.elevatedSurface(context),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: onDark
                 ? Colors.white.withValues(alpha: 0.16)
-                : AppColors.dividerSoft,
+                : AppColors.softBorder(context),
           ),
         ),
         child: Text(
           text,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: color.withValues(alpha: onDark ? 0.86 : 0.72),
-              ),
+            color: color.withValues(alpha: onDark ? 0.86 : 0.72),
+          ),
         ),
       ),
     );

@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     allowed_origins: list[str] = ["*"]
     secret_key: str = "change-me-in-production-use-a-random-string"
     algorithm: str = "HS256"
-    access_token_expire_minutes: int = 30
+    access_token_expire_minutes: int = 10080  # 1 week (7 * 24 * 60)
 
     database_url: str = ""
 

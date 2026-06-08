@@ -72,10 +72,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
     super.dispose();
   }
 
-  Color get _borderColor {
+  Color _borderColor(BuildContext context) {
     if (widget.errorText != null) return AppColors.accentRed;
-    if (_isFocused) return AppColors.primaryFocus;
-    return AppColors.hairlineSoft;
+    if (_isFocused) return AppColors.focusRing(context);
+    return AppColors.isDark(context)
+        ? AppColors.darkHairline
+        : AppColors.hairlineSoft;
   }
 
   double get _borderWidth {
@@ -91,7 +93,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
         if (widget.labelText != null) ...[
           Text(
             widget.labelText!,
-            style: theme.textTheme.labelSmall?.copyWith(color: AppColors.mute),
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: AppColors.mutedText(context),
+            ),
           ),
           const SizedBox(height: 8),
         ],
@@ -120,14 +124,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     child: widget.suffixIcon,
                   ),
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-            style: AppTextStyles.body.copyWith(color: AppColors.ink),
-            placeholderStyle: AppTextStyles.body.copyWith(color: AppColors.mute),
-            cursorColor: AppColors.primary,
+            style: AppTextStyles.body.copyWith(
+              color: AppColors.bodyText(context),
+            ),
+            placeholderStyle: AppTextStyles.body.copyWith(
+              color: AppColors.placeholderText(context),
+            ),
+            cursorColor: AppColors.primaryInteractive(context),
             decoration: BoxDecoration(
-              color: AppColors.canvas,
+              color: AppColors.surface(context),
               borderRadius: BorderRadius.circular(999),
               border: Border.all(
-                color: _borderColor,
+                color: _borderColor(context),
                 width: _borderWidth,
               ),
             ),
@@ -137,7 +145,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
           const SizedBox(height: 6),
           Text(
             widget.errorText!,
-            style: theme.textTheme.labelSmall?.copyWith(color: AppColors.accentRed),
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: AppColors.accentRed,
+            ),
           ),
         ],
       ],

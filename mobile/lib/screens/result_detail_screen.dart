@@ -6,10 +6,7 @@ import '../widgets/disclaimer_banner.dart';
 import '../widgets/health_info_card.dart';
 
 class ResultDetailScreen extends StatelessWidget {
-  const ResultDetailScreen({
-    super.key,
-    required this.condition,
-  });
+  const ResultDetailScreen({super.key, required this.condition});
 
   final ConditionInfo condition;
 
@@ -20,14 +17,22 @@ class ResultDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: CupertinoNavigationBar(
         middle: Text(condition.label),
-        border: const Border(bottom: BorderSide(color: AppColors.dividerSoft)),
+        backgroundColor: AppColors.background(context),
+        border: Border(
+          bottom: BorderSide(color: AppColors.softBorder(context)),
+        ),
       ),
       body: ListView(
         padding: EdgeInsets.fromLTRB(24, 16, 24, 34 + bottomPadding),
         children: [
           Text(condition.label, style: theme.textTheme.headlineMedium),
           const SizedBox(height: 10),
-          Text(condition.overview, style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.mute)),
+          Text(
+            condition.overview,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: AppColors.mutedText(context),
+            ),
+          ),
           const SizedBox(height: 22),
           const DisclaimerBanner(),
           const SizedBox(height: 22),

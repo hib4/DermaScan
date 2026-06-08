@@ -27,7 +27,7 @@ class EmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 52, color: AppColors.mute),
+            Icon(icon, size: 52, color: AppColors.mutedIcon(context)),
             const SizedBox(height: 18),
             Text(
               title,
@@ -37,7 +37,9 @@ class EmptyState extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               message,
-              style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.mute),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.mutedText(context),
+              ),
               textAlign: TextAlign.center,
             ),
             if (actionLabel != null && onAction != null) ...[

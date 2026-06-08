@@ -23,7 +23,8 @@ class CameraScreen extends StatefulWidget {
   State<CameraScreen> createState() => _CameraScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver {
+class _CameraScreenState extends State<CameraScreen>
+    with WidgetsBindingObserver {
   final _picker = ImagePicker();
   final _logger = AppLogger.scan;
 
@@ -36,7 +37,8 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
 
   Timer? _qualityCheckTimer;
 
-  bool get _isCameraReady => _controller != null && _controller!.value.isInitialized;
+  bool get _isCameraReady =>
+      _controller != null && _controller!.value.isInitialized;
 
   @override
   void initState() {
@@ -73,12 +75,18 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
 
       final status = await Permission.camera.request();
       if (!status.isGranted) {
-        throw CameraException('Permission denied', 'Camera permission was not granted');
+        throw CameraException(
+          'Permission denied',
+          'Camera permission was not granted',
+        );
       }
 
       final cameras = await availableCameras();
       if (cameras.isEmpty) {
-        throw CameraException('No cameras', 'No cameras available on this device');
+        throw CameraException(
+          'No cameras',
+          'No cameras available on this device',
+        );
       }
 
       final rearCamera = cameras.firstWhere(
@@ -169,7 +177,9 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
     _logger.d('Evaluating image quality: ${imagePath.split('/').last}');
     final sw = Stopwatch()..start();
     final quality = await ImageQualityEvaluator.evaluate(File(imagePath));
-    _logger.d('Quality evaluation done in ${sw.elapsedMilliseconds}ms — acceptable: ${quality.isAcceptable}');
+    _logger.d(
+      'Quality evaluation done in ${sw.elapsedMilliseconds}ms — acceptable: ${quality.isAcceptable}',
+    );
 
     if (!mounted) return;
 
@@ -195,7 +205,9 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               QualityWarningCard(
-                message: quality.message ?? 'Image quality could be improved. Try another photo.',
+                message:
+                    quality.message ??
+                    'Image quality could be improved. Try another photo.',
               ),
               const SizedBox(height: 18),
               PrimaryButton(
@@ -229,7 +241,9 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const CupertinoActivityIndicator(color: AppColors.primary),
+              CupertinoActivityIndicator(
+                color: AppColors.primaryInteractive(context),
+              ),
               const SizedBox(height: 16),
               Text(
                 'Initializing camera...',
@@ -261,7 +275,10 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
             right: 0,
             child: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -269,7 +286,10 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
                       minimumSize: const Size(44, 44),
                       padding: EdgeInsets.zero,
                       onPressed: () => context.pop(),
-                      child: const Icon(CupertinoIcons.xmark, color: Colors.white),
+                      child: const Icon(
+                        CupertinoIcons.xmark,
+                        color: Colors.white,
+                      ),
                     ),
                     if (_qualityWarning != null)
                       Container(
@@ -311,10 +331,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
           Center(
             child: CustomPaint(
               painter: _FrameGuidePainter(),
-              child: SizedBox(
-                width: 280,
-                height: 280,
-              ),
+              child: SizedBox(width: 280, height: 280),
             ),
           ),
 
